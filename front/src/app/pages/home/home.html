@@ -1,7 +1,51 @@
-<div class="hero">
+<!-- Canvas para el modelo 3D -->
+<div class="canvas-wrapper">
   <canvas #canvas></canvas>
+</div>
 
-  <div class="text">
-    <h1>Nike Air</h1>
+<!-- Contenido de la página -->
+<div class="content">
+  <!-- Título en esquina superior izquierda -->
+  <div class="title-section">
+    <h1 class="main-title" [style.transform]="'translateX(' + titleOffset + 'px)'">
+      SUISSE
+    </h1>
+    <div class="subtitle" [style.opacity]="subtitleOpacity">
+      LUXURY COLLECTION
+    </div>
   </div>
+
+  <!-- Contenido distribuido en el bottom -->
+  <div class="bottom-content">
+    <div class="info-section" [style.transform]="'translateY(' + infoOffset + 'px)'">
+      <div class="info-card">
+        <div class="info-number">01</div>
+        <div class="info-title">Artisan Craftsmanship</div>
+        <div class="info-text">Handcrafted with precision using the finest materials from Switzerland</div>
+      </div>
+
+      <div class="info-card" [style.transitionDelay]="'0.2s'">
+        <div class="info-number">02</div>
+        <div class="info-title">Limited Edition</div>
+        <div class="info-text">Only 100 pieces worldwide, each with unique serial number</div>
+      </div>
+
+      <div class="info-card" [style.transitionDelay]="'0.4s'">
+        <div class="info-number">03</div>
+        <div class="info-title">Premium Quality</div>
+        <div class="info-text">Certified Swiss excellence with lifetime warranty</div>
+      </div>
+    </div>
+
+    <div class="footer-section" [style.opacity]="footerOpacity">
+      <div class="footer-line"></div>
+      <div class="footer-text">
+        <span>EXPLORE THE COLLECTION</span>
+        <span class="scroll-indicator">↓ SCROLL TO DISCOVER ↓</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barra de progreso de scroll -->
+  <div class="scroll-progress" [style.width]="scrollProgress + '%'"></div>
 </div>
