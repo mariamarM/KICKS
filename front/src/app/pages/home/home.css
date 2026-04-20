@@ -1,14 +1,13 @@
 .hero {
   position: relative;
   height: 100vh;
-  background: black;
+  background: rgb(39, 39, 39);
 }
 
 canvas {
   position: absolute;
   right: 0;
-  width: 60%;
-  height: 100%;
+  top: 0;
 }
 
 .text {

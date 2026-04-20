@@ -14,6 +14,9 @@ export class Home implements AfterViewInit {
   camera!: THREE.PerspectiveCamera;
   renderer!: THREE.WebGLRenderer;
   shoe!: THREE.Object3D;
+  cameraRadius: number = 6;
+  cameraAngle: number = 0;
+  cameraHeight: number = 8;
 
   ngAfterViewInit() {
     this.initScene();
@@ -25,67 +28,70 @@ export class Home implements AfterViewInit {
 initScene() {
   this.scene = new THREE.Scene();
 
-  // 🎥 Cámara (lejos y de frente)
   this.camera = new THREE.PerspectiveCamera(
-    60,
-    window.innerWidth / window.innerHeight,
+    45,
+    (window.innerWidth * 0.5) / (window.innerHeight * 0.33),
     0.1,
     1000
   );
 
+  // 🎥 cámara bien posicionada
   this.camera.position.set(0, 0, 10);
   this.camera.lookAt(0, 0, 0);
 
-  // 🖥️ Renderer
+  // 🖥️ renderer (más pequeño)
   this.renderer = new THREE.WebGLRenderer({
     canvas: this.canvas.nativeElement,
     antialias: true
   });
 
-  this.renderer.setSize(window.innerWidth, window.innerHeight);
+  this.renderer.setSize(window.innerWidth * 0.5, window.innerHeight * 0.33);
   this.renderer.setClearColor(0x000000, 1);
   this.renderer.setPixelRatio(window.devicePixelRatio);
 
-  // 💡 LUZ PRINCIPAL (blanca)
-  const keyLight = new THREE.DirectionalLight(0xffffff, 2);
+  // 🔥 LUZ PRINCIPAL (muy fuerte)
+  const keyLight = new THREE.DirectionalLight(0xffffff, 4);
   keyLight.position.set(5, 5, 5);
   this.scene.add(keyLight);
 
   // 🔥 LUZ CÁLIDA (izquierda)
-  const warmLight = new THREE.DirectionalLight(0xffaa88, 2);
+  const warmLight = new THREE.DirectionalLight(0xffaa88, 3);
   warmLight.position.set(-5, 3, 5);
   this.scene.add(warmLight);
 
   // ❄️ LUZ FRÍA (derecha)
-  const coolLight = new THREE.DirectionalLight(0x88ccff, 2);
+  const coolLight = new THREE.DirectionalLight(0x88ccff, 3);
   coolLight.position.set(5, -3, 5);
   this.scene.add(coolLight);
 
-  // 🌫️ AMBIENTE (suave)
-  const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+  // 💥 LUZ EXTRA (relleno frontal)
+  const frontLight = new THREE.PointLight(0xffffff, 5);
+  frontLight.position.set(0, 0, 5);
+  this.scene.add(frontLight);
+
+  // 🌫️ ambiente
+  const ambient = new THREE.AmbientLight(0xffffff, 1);
   this.scene.add(ambient);
 }
+
 loadModel() {
   const loader = new GLTFLoader();
 
   loader.load(
-    '/assets/shoe.glb', // 👈 IMPORTANTE (según tu config)
+    '/assets/shoe.glb',
     (gltf) => {
       this.shoe = gltf.scene;
 
-      // 🔥 CENTRAR MODELO
       const box = new THREE.Box3().setFromObject(this.shoe);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
 
       this.shoe.position.sub(center);
 
-      // 🔥 ESCALA CORRECTA (NO gigante)
       const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 4 / maxDim;
-      this.shoe.scale.setScalar(scale);
+const scale = 2 / maxDim;
+this.shoe.scale.setScalar(scale);
 
-      // 🔥 ARREGLAR MATERIALES (MUY IMPORTANTE)
       this.shoe.traverse((child: any) => {
         if (child.isMesh) {
           child.material.metalness = 0.6;
@@ -106,9 +112,7 @@ loadModel() {
   animate = () => {
     requestAnimationFrame(this.animate);
 
-    if (this.shoe) {
-      this.shoe.rotation.y += 0.005; // giro suave
-    }
+    this.updateCameraPosition();
 
     this.renderer.render(this.scene, this.camera);
   }
@@ -116,10 +120,14 @@ loadModel() {
   scrollControl() {
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
-
-      if (this.shoe) {
-        this.shoe.rotation.y = scrollY * 0.003;
-      }
+      this.cameraAngle = scrollY * 0.005;
     });
+  }
+
+  updateCameraPosition() {
+    const x = this.cameraRadius * Math.sin(this.cameraAngle);
+    const z = this.cameraRadius * Math.cos(this.cameraAngle);
+    this.camera.position.set(x, this.cameraHeight, z);
+    this.camera.lookAt(0, 0, 0);
   }
 }
