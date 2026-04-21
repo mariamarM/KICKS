@@ -1,1 +1,24 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <div class="nav-container">
+    <!-- Logo -->
+    <div class="nav-logo">
+      <a routerLink="/">
+        SUISSE
+      </a>
+    </div>
+
+    <!-- Menú principal -->
+    <div class="nav-menu">
+      <a routerLink="/" routerLinkActive="active">HOME</a>
+      <a routerLink="/products" routerLinkActive="active">PRODUCTS</a>
+      <a routerLink="/orders" routerLinkActive="active" *ngIf="isLoggedIn">MY ORDERS</a>
+      <a routerLink="/cart" routerLinkActive="active">CART </a>
+    </div>
+
+    <!-- Botón de login/logout -->
+    <div class="nav-actions">
+      <a routerLink="/login" *ngIf="!isLoggedIn" class="login-btn">LOGIN</a>
+      <button *ngIf="isLoggedIn" (click)="logout()" class="logout-btn">LOGOUT</button>
+    </div>
+  </div>
+</nav>

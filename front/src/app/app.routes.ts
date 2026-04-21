@@ -10,4 +10,6 @@ export const routes: Routes = [ { path: '', component: Home },
   { path: 'products/:id', component: ProductDetail },
   { path: 'cart', component: Cart },
   { path: 'orders', component: Orders },
-  { path: 'login', component: Login },];
+  { path: 'login', component: Login },
+ { path: '**', redirectTo: '' } //esto que si no existe la ruta q vatya a home
+];

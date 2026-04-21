@@ -1,1 +1,33 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="login-card">
+    <h2>Login</h2>
+
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="onLogin()">
+      <input
+        type="email"
+        [value]="email"
+        (input)="email = $any($event.target).value"
+        placeholder="Email"
+        required>
+
+      <input
+        type="password"
+        [value]="password"
+        (input)="password = $any($event.target).value"
+        placeholder="Password"
+        required>
+
+      <button type="submit">Iniciar Sesión</button>
+    </form>
+
+    <div class="demo-info">
+      <p><strong>Cuentas de prueba:</strong></p>
+      <p>👤 Usuario: user@test.com / 123456</p>
+      <p>👑 Admin: admin@test.com / admin123</p>
+    </div>
+  </div>
+</div>
