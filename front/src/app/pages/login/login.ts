@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [],
-  inputs: [],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -16,7 +18,7 @@ export class Login {
   constructor(private router: Router) {}
 
   onLogin(): void {
-    // Simular login (después conectarás con API real)
+    // Usuario normal
     if (this.email === 'user@test.com' && this.password === '123456') {
       const user = {
         id: 1,
@@ -27,6 +29,7 @@ export class Login {
       localStorage.setItem('user', JSON.stringify(user));
       this.router.navigate(['/']);
     }
+    // Administrador
     else if (this.email === 'admin@test.com' && this.password === 'admin123') {
       const user = {
         id: 2,

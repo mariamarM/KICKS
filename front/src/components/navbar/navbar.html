@@ -3,22 +3,116 @@
     <!-- Logo -->
     <div class="nav-logo">
       <a routerLink="/">
-        SUISSE
+        <span class="logo-text">SUISSE</span>
       </a>
     </div>
 
-    <!-- Menú principal -->
-    <div class="nav-menu">
-      <a routerLink="/" routerLinkActive="active">HOME</a>
-      <a routerLink="/products" routerLinkActive="active">PRODUCTS</a>
-      <a routerLink="/orders" routerLinkActive="active" *ngIf="isLoggedIn">MY ORDERS</a>
-      <a routerLink="/cart" routerLinkActive="active">CART </a>
+    <!-- Menú Desktop según el rol -->
+    <div class="nav-menu desktop-menu">
+      <!-- Menú para USUARIO NORMAL -->
+      <ng-container *ngIf="isLoggedIn && !isAdmin">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <span> INICIO</span>
+        </a>
+        <a routerLink="/products" routerLinkActive="active">
+          <span> CATÁLOGO</span>
+        </a>
+        <a routerLink="/my-orders" routerLinkActive="active">
+          <span> MIS PEDIDOS</span>
+        </a>
+      </ng-container>
+
+      <!-- Menú para ADMINISTRADOR -->
+      <ng-container *ngIf="isLoggedIn && isAdmin">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <span> INICIO</span>
+        </a>
+        <a routerLink="/products" routerLinkActive="active">
+          <span> CATÁLOGO</span>
+        </a>
+        <a routerLink="/my-orders" routerLinkActive="active">
+          <span> MIS PEDIDOS</span>
+        </a>
+        <a routerLink="/admin/products" routerLinkActive="active">
+          <span> ADMIN - PRODUCTOS</span>
+        </a>
+        <a routerLink="/admin/orders" routerLinkActive="active">
+          <span> ADMIN - PEDIDOS</span>
+        </a>
+      </ng-container>
+
+      <!-- Menú para NO LOGUEADO -->
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <span>INICIO</span>
+        </a>
+        <a routerLink="/products" routerLinkActive="active">
+          <span>CATÁLOGO</span>
+        </a>
+      </ng-container>
     </div>
 
-    <!-- Botón de login/logout -->
+    <!-- Acciones derecha -->
     <div class="nav-actions">
-      <a routerLink="/login" *ngIf="!isLoggedIn" class="login-btn">LOGIN</a>
-      <button *ngIf="isLoggedIn" (click)="logout()" class="logout-btn">LOGOUT</button>
+      <!-- Carrito (visible para todos) -->
+      <a routerLink="/cart" class="cart-icon" routerLinkActive="active">
+        <span class="cart-count" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </a>
+
+      <!-- Usuario NO logueado -->
+      <div class="user-menu" *ngIf="!isLoggedIn">
+        <a routerLink="/login" class="login-btn">INICIAR SESIÓN</a>
+      </div>
+
+      <!-- Usuario logueado -->
+      <div class="user-menu dropdown" *ngIf="isLoggedIn">
+        <button class="user-btn" (click)="toggleDropdown()">
+          <span class="user-icon"></span>
+          <span class="user-name">{{ userName }}</span>
+          <span class="dropdown-arrow" [class.rotated]="dropdownOpen">▼</span>
+        </button>
+
+        <div class="dropdown-menu" [class.show]="dropdownOpen">
+          <div class="user-info">
+            <div class="user-email">{{ getUserEmail() }}</div>
+            <div class="user-role" [class.admin]="isAdmin">
+              {{ isAdmin ? ' Administrador' : ' Usuario' }}
+            </div>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <!-- Opciones según rol -->
+          <a routerLink="/profile" class="dropdown-item">
+          Mi Perfil
+          </a>
+
+          <a routerLink="/my-orders" class="dropdown-item" *ngIf="!isAdmin">
+           Mis Pedidos
+          </a>
+
+          <div class="dropdown-divider" *ngIf="isAdmin"></div>
+
+          <a routerLink="/admin/products" class="dropdown-item" *ngIf="isAdmin">
+             Gestionar Productos
+          </a>
+
+          <a routerLink="/admin/orders" class="dropdown-item" *ngIf="isAdmin">
+           Gestionar Pedidos
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <button (click)="logout()" class="dropdown-item logout">
+           Cerrar Sesión
+          </button>
+        </div>
+      </div>
+
+
     </div>
   </div>
+
+
 </nav>
+
