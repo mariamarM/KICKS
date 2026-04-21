@@ -1,46 +1,14 @@
 <nav class="navbar">
   <div class="nav-container">
-    <!-- Logo -->
+    <!-- Logo a la izquierda -->
     <div class="nav-logo">
       <a routerLink="/">
-        <span class="logo-text">SUISSE</span>
+        <span class="logo-text">KICKS</span>
       </a>
     </div>
 
-    <!-- Menú Desktop según el rol -->
+    <!-- Menú Desktop a la derecha -->
     <div class="nav-menu desktop-menu">
-      <!-- Menú para USUARIO NORMAL -->
-      <ng-container *ngIf="isLoggedIn && !isAdmin">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-          <span> INICIO</span>
-        </a>
-        <a routerLink="/products" routerLinkActive="active">
-          <span> CATÁLOGO</span>
-        </a>
-        <a routerLink="/my-orders" routerLinkActive="active">
-          <span> MIS PEDIDOS</span>
-        </a>
-      </ng-container>
-
-      <!-- Menú para ADMINISTRADOR -->
-      <ng-container *ngIf="isLoggedIn && isAdmin">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-          <span> INICIO</span>
-        </a>
-        <a routerLink="/products" routerLinkActive="active">
-          <span> CATÁLOGO</span>
-        </a>
-        <a routerLink="/my-orders" routerLinkActive="active">
-          <span> MIS PEDIDOS</span>
-        </a>
-        <a routerLink="/admin/products" routerLinkActive="active">
-          <span> ADMIN - PRODUCTOS</span>
-        </a>
-        <a routerLink="/admin/orders" routerLinkActive="active">
-          <span> ADMIN - PEDIDOS</span>
-        </a>
-      </ng-container>
-
       <!-- Menú para NO LOGUEADO -->
       <ng-container *ngIf="!isLoggedIn">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -49,70 +17,189 @@
         <a routerLink="/products" routerLinkActive="active">
           <span>CATÁLOGO</span>
         </a>
+        <a routerLink="/login" routerLinkActive="active" class="login-link">
+          <span>INICIAR SESIÓN</span>
+        </a>
+      </ng-container>
+
+      <!-- Menú para USUARIO NORMAL -->
+      <ng-container *ngIf="isLoggedIn && !isAdmin">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <span>INICIO</span>
+        </a>
+        <a routerLink="/products" routerLinkActive="active">
+          <span>CATÁLOGO</span>
+        </a>
+        <a routerLink="/my-orders" routerLinkActive="active">
+          <span>MIS PEDIDOS</span>
+        </a>
+        <div class="user-menu dropdown">
+          <button class="user-btn" (click)="toggleDropdown()">
+            <span class="user-icon">👤</span>
+            <span class="user-name">{{ userName }}</span>
+            <span class="dropdown-arrow" [class.rotated]="dropdownOpen">▼</span>
+          </button>
+
+          <div class="dropdown-menu" [class.show]="dropdownOpen">
+            <div class="user-info">
+              <div class="user-email">{{ getUserEmail() }}</div>
+              <div class="user-role">👤 Usuario</div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a routerLink="/profile" class="dropdown-item">
+              Mi Perfil
+            </a>
+            <a routerLink="/cart" class="dropdown-item">
+               Mi Carrito
+            </a>
+            <div class="dropdown-divider"></div>
+            <button (click)="logout()" class="dropdown-item logout">
+               Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Menú para ADMINISTRADOR -->
+      <ng-container *ngIf="isLoggedIn && isAdmin">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <span>INICIO</span>
+        </a>
+        <a routerLink="/products" routerLinkActive="active">
+          <span>CATÁLOGO</span>
+        </a>
+        <a routerLink="/my-orders" routerLinkActive="active">
+          <span>MIS PEDIDOS</span>
+        </a>
+        <a routerLink="/admin/products" routerLinkActive="active">
+          <span>ADMIN</span>
+        </a>
+        <div class="user-menu dropdown">
+          <button class="user-btn" (click)="toggleDropdown()">
+            <span class="user-name">{{ userName }}</span>
+            <span class="dropdown-arrow" [class.rotated]="dropdownOpen">▼</span>
+          </button>
+
+          <div class="dropdown-menu" [class.show]="dropdownOpen">
+            <div class="user-info">
+              <div class="user-email">{{ getUserEmail() }}</div>
+              <div class="user-role admin">Administrador</div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a routerLink="/profile" class="dropdown-item">
+             Mi Perfil
+            </a>
+            <a routerLink="/admin/products" class="dropdown-item">
+               Gestionar Productos
+            </a>
+            <a routerLink="/admin/orders" class="dropdown-item">
+              Gestionar Pedidos
+            </a>
+            <div class="dropdown-divider"></div>
+            <button (click)="logout()" class="dropdown-item logout">
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
       </ng-container>
     </div>
 
-    <!-- Acciones derecha -->
+    <!-- Carrito y menú móvil (siempre visibles) -->
     <div class="nav-actions">
-      <!-- Carrito (visible para todos) -->
+      <!-- Carrito -->
       <a routerLink="/cart" class="cart-icon" routerLinkActive="active">
+
         <span class="cart-count" *ngIf="cartCount > 0">{{ cartCount }}</span>
       </a>
 
-      <!-- Usuario NO logueado -->
-      <div class="user-menu" *ngIf="!isLoggedIn">
-        <a routerLink="/login" class="login-btn">INICIAR SESIÓN</a>
-      </div>
-
-      <!-- Usuario logueado -->
-      <div class="user-menu dropdown" *ngIf="isLoggedIn">
-        <button class="user-btn" (click)="toggleDropdown()">
-          <span class="user-icon"></span>
-          <span class="user-name">{{ userName }}</span>
-          <span class="dropdown-arrow" [class.rotated]="dropdownOpen">▼</span>
-        </button>
-
-        <div class="dropdown-menu" [class.show]="dropdownOpen">
-          <div class="user-info">
-            <div class="user-email">{{ getUserEmail() }}</div>
-            <div class="user-role" [class.admin]="isAdmin">
-              {{ isAdmin ? ' Administrador' : ' Usuario' }}
-            </div>
-          </div>
-
-          <div class="dropdown-divider"></div>
-
-          <!-- Opciones según rol -->
-          <a routerLink="/profile" class="dropdown-item">
-          Mi Perfil
-          </a>
-
-          <a routerLink="/my-orders" class="dropdown-item" *ngIf="!isAdmin">
-           Mis Pedidos
-          </a>
-
-          <div class="dropdown-divider" *ngIf="isAdmin"></div>
-
-          <a routerLink="/admin/products" class="dropdown-item" *ngIf="isAdmin">
-             Gestionar Productos
-          </a>
-
-          <a routerLink="/admin/orders" class="dropdown-item" *ngIf="isAdmin">
-           Gestionar Pedidos
-          </a>
-
-          <div class="dropdown-divider"></div>
-
-          <button (click)="logout()" class="dropdown-item logout">
-           Cerrar Sesión
-          </button>
-        </div>
-      </div>
-
-
+      <!-- Botón menú móvil -->
+      <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+        <span class="hamburger"></span>
+      </button>
     </div>
   </div>
 
+  <!-- Menú Móvil -->
+  <div class="mobile-menu" [class.open]="mobileMenuOpen">
+    <div class="mobile-menu-header">
+      <span class="mobile-logo">SUISSE</span>
+      <button class="mobile-close" (click)="closeMobileMenu()">✕</button>
+    </div>
+    <div class="mobile-menu-content">
+      <!-- Móvil: No logueado -->
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active">
+           INICIO
+        </a>
+        <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">
+           CATÁLOGO
+        </a>
+        <a routerLink="/cart" (click)="closeMobileMenu()" routerLinkActive="active">
+           CARRITO
+        </a>
+        <div class="mobile-divider"></div>
+        <a routerLink="/login" (click)="closeMobileMenu()" class="mobile-login">
+           INICIAR SESIÓN
+        </a>
+      </ng-container>
 
+      <!-- Móvil: Usuario Normal -->
+      <ng-container *ngIf="isLoggedIn && !isAdmin">
+        <div class="mobile-user-info">
+          <span class="mobile-user-icon">👤</span>
+          <span class="mobile-user-name">{{ userName }}</span>
+        </div>
+        <div class="mobile-divider"></div>
+        <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active">
+           INICIO
+        </a>
+        <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">
+           CATÁLOGO
+        </a>
+        <a routerLink="/my-orders" (click)="closeMobileMenu()" routerLinkActive="active">
+          MIS PEDIDOS
+        </a>
+        <a routerLink="/cart" (click)="closeMobileMenu()" routerLinkActive="active">
+           CARRITO
+        </a>
+        <div class="mobile-divider"></div>
+        <button (click)="logout(); closeMobileMenu()" class="mobile-logout">
+           CERRAR SESIÓN
+        </button>
+      </ng-container>
+
+      <!-- Móvil: Administrador -->
+      <ng-container *ngIf="isLoggedIn && isAdmin">
+        <div class="mobile-user-info">
+          <span class="mobile-user-name">{{ userName }}</span>
+        </div>
+        <div class="mobile-divider"></div>
+        <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active">
+           INICIO
+        </a>
+        <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">
+           CATÁLOGO
+        </a>
+        <a routerLink="/my-orders" (click)="closeMobileMenu()" routerLinkActive="active">
+           MIS PEDIDOS
+        </a>
+        <a routerLink="/admin/products" (click)="closeMobileMenu()" routerLinkActive="active">
+           ADMIN - PRODUCTOS
+        </a>
+        <a routerLink="/admin/orders" (click)="closeMobileMenu()" routerLinkActive="active">
+          ADMIN - PEDIDOS
+        </a>
+        <a routerLink="/cart" (click)="closeMobileMenu()" routerLinkActive="active">
+           CARRITO
+        </a>
+        <div class="mobile-divider"></div>
+        <button (click)="logout(); closeMobileMenu()" class="mobile-logout">
+           CERRAR SESIÓN
+        </button>
+      </ng-container>
+    </div>
+  </div>
 </nav>
 
+<!-- Overlay para móvil -->
+<div class="mobile-overlay" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
