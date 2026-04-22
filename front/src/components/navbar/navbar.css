@@ -69,7 +69,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #ff3366, #ff6633);
+  background: linear-gradient(90deg, #1be02b, #1be02b);
   transition: width 0.3s;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .nav-menu a.active {
-  color: #ff6633;
+  color: #1be02b;
 }
 
 /* Botón de login especial */
@@ -88,10 +88,7 @@
   padding: 0.5rem 1.5rem !important;
 }
 
-.login-link:hover {
-  border-color: #ff6633;
-  background: rgba(255, 102, 51, 0.1);
-}
+
 
 /* User menu */
 .user-menu {
