@@ -1,7 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.srvice';
 
 @Component({
   selector: 'app-navbar',
@@ -17,17 +18,27 @@ export class NavbarComponent implements OnInit {
   cartCount: number = 0;
   dropdownOpen: boolean = false;
   mobileMenuOpen: boolean = false;
+  private lastUserCheck: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnInit(): void {
     this.checkUserStatus();
+    this.lastUserCheck = localStorage.getItem('user') || '';
     this.updateCartCount();
 
-    // Escuchar cambios en localStorage
-    window.addEventListener('storage', () => {
-      this.checkUserStatus();
-      this.updateCartCount();
+    this.ngZone.runOutsideAngular(() => {
+      setInterval(() => {
+        const currentUser = localStorage.getItem('user') || '';
+        if (currentUser !== this.lastUserCheck) {
+          this.lastUserCheck = currentUser;
+          this.ngZone.run(() => {
+            this.checkUserStatus();
+            this.updateCartCount();
+            this.cdr.detectChanges();
+          });
+        }
+      }, 500);
     });
   }
 
@@ -81,6 +92,7 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     localStorage.removeItem('user');
     localStorage.removeItem('cart');
+    this.authService.logout();
     this.isLoggedIn = false;
     this.isAdmin = false;
     this.dropdownOpen = false;

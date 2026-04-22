@@ -115,6 +115,21 @@ export class Home implements AfterViewInit, OnDestroy {
       this.lights.push(light);
     });
 
+    // Luces verdes izquierda-atrás
+    const greenLightPositions = [
+      { intensity: 1.5, pos: [-1, 2, -1], color: 0x00ff00 },
+      { intensity: 1.0, pos: [-0.5, 1.5, -0.5], color: 0x22ff22 },
+      { intensity: 1.2, pos: [-0.3, 2.5, -1], color: 0x00ff22 }
+    ];
+
+    greenLightPositions.forEach(config => {
+      const light = new THREE.PointLight(config.color, config.intensity);
+      light.position.set(config.pos[0] + 1.5, config.pos[1], config.pos[2]);
+      light.distance = 8;
+      this.scene.add(light);
+      this.lights.push(light);
+    });
+
     // Luz direccional principal
     const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
     mainLight.position.set(2, 3, 2);
@@ -130,7 +145,7 @@ export class Home implements AfterViewInit, OnDestroy {
 
   private loadModel(): void {
     const loader = new GLTFLoader();
-    const modelPath = 'assets/shoe.glb';
+    const modelPath = 'assets/NIMFA.glb';
 
     loader.load(
       modelPath,
@@ -156,7 +171,7 @@ export class Home implements AfterViewInit, OnDestroy {
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 1.2 / maxDim;
+        const scale = 2.5 / maxDim;
         this.model.scale.set(scale, scale, scale);
         this.model.position.set(
           -center.x * scale + 1.5,
@@ -176,27 +191,35 @@ export class Home implements AfterViewInit, OnDestroy {
     );
   }
 
-  private enhanceMetalMaterial(material: THREE.Material): void {
+private enhanceMetalMaterial(material: THREE.Material): void {
     if (material instanceof THREE.MeshStandardMaterial) {
-      material.metalness = 1.0;
-      material.roughness = 0.05;
-      material.envMapIntensity = 2.0;
-      material.emissiveIntensity = 0.1;
+      material.metalness = 0.1;
+      material.roughness = 0.15;
+      material.envMapIntensity = 1.5;
+      material.color.setHex(0xffffff);
     } else if (material instanceof THREE.MeshPhysicalMaterial) {
-      material.metalness = 1.0;
-      material.roughness = 0.03;
+      material.metalness = 0.05;
+      material.roughness = 0.02;
       material.clearcoat = 1.0;
-      material.clearcoatRoughness = 0.05;
-      material.envMapIntensity = 2.5;
-    }
+      material.clearcoatRoughness = 0.02;
+      material.envMapIntensity = 3.0;
+      material.color.setHex(0xfffaf0);
+      if (!material.emissive || material.emissive.getHex() === 0x000000) {
+        material.emissive.setHex(0x111111);
+      }
+}
   }
 
   private createBackupModel(): void {
-    const geometry = new THREE.SphereGeometry(0.8, 64, 64);
-    const material = new THREE.MeshStandardMaterial({
-      color: 0xff6600,
-      metalness: 1.0,
-      roughness: 0.05
+    const geometry = new THREE.SphereGeometry(1.2, 64, 64);
+    const material = new THREE.MeshPhysicalMaterial({
+      color: 0xfffaf0,
+      metalness: 0.05,
+      roughness: 0.02,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      emissive: 0x111111,
+      emissiveIntensity: 0.1
     });
     const sphere = new THREE.Mesh(geometry, material);
     sphere.position.x = 1.5;

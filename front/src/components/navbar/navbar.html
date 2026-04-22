@@ -3,7 +3,8 @@
     <!-- Logo a la izquierda -->
     <div class="nav-logo">
       <a routerLink="/">
-        <span class="logo-text">KICKS</span>
+        <img src="assets/kicks.png" alt="KICKS Logo" class="logo-image">
+        <!-- <span class="logo-text">KICKS</span> -->
       </a>
     </div>
 
@@ -35,7 +36,6 @@
         </a>
         <div class="user-menu dropdown">
           <button class="user-btn" (click)="toggleDropdown()">
-            <span class="user-icon">👤</span>
             <span class="user-name">{{ userName }}</span>
             <span class="dropdown-arrow" [class.rotated]="dropdownOpen">▼</span>
           </button>
@@ -43,7 +43,7 @@
           <div class="dropdown-menu" [class.show]="dropdownOpen">
             <div class="user-info">
               <div class="user-email">{{ getUserEmail() }}</div>
-              <div class="user-role">👤 Usuario</div>
+              <div class="user-role"> Usuario</div>
             </div>
             <div class="dropdown-divider"></div>
             <a routerLink="/profile" class="dropdown-item">
@@ -68,16 +68,14 @@
         <a routerLink="/products" routerLinkActive="active">
           <span>CATÁLOGO</span>
         </a>
-        <a routerLink="/my-orders" routerLinkActive="active">
-          <span>MIS PEDIDOS</span>
-        </a>
         <a routerLink="/admin/products" routerLinkActive="active">
-          <span>ADMIN</span>
+          <span>GESTIONAR</span>
         </a>
         <div class="user-menu dropdown">
           <button class="user-btn" (click)="toggleDropdown()">
             <span class="user-name">{{ userName }}</span>
-            <span class="dropdown-arrow" [class.rotated]="dropdownOpen">▼</span>
+            <span class="dropdown-arrow" [class
+            .rotated]="dropdownOpen">▼</span>
           </button>
 
           <div class="dropdown-menu" [class.show]="dropdownOpen">
@@ -168,7 +166,7 @@
         </button>
       </ng-container>
 
-      <!-- Móvil: Administrador -->
+<!-- Móvil: Administrador -->
       <ng-container *ngIf="isLoggedIn && isAdmin">
         <div class="mobile-user-info">
           <span class="mobile-user-name">{{ userName }}</span>
@@ -180,14 +178,11 @@
         <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">
            CATÁLOGO
         </a>
-        <a routerLink="/my-orders" (click)="closeMobileMenu()" routerLinkActive="active">
-           MIS PEDIDOS
-        </a>
         <a routerLink="/admin/products" (click)="closeMobileMenu()" routerLinkActive="active">
-           ADMIN - PRODUCTOS
+           GESTIONAR PRODUCTOS
         </a>
         <a routerLink="/admin/orders" (click)="closeMobileMenu()" routerLinkActive="active">
-          ADMIN - PEDIDOS
+           GESTIONAR PEDIDOS
         </a>
         <a routerLink="/cart" (click)="closeMobileMenu()" routerLinkActive="active">
            CARRITO

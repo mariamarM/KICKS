@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 /* Espacio para el navbar fijo */
+::root{
+  --BrandColor: #1be02b;
+  --backColor: black;
+}
 body {
   margin: 0;
   padding-top: 70px;
