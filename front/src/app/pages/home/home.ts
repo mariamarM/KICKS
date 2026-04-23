@@ -24,7 +24,7 @@ export class Home implements AfterViewInit, OnDestroy {
   footerOpacity: number = 1;
   scrollProgress: number = 0;
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef) { }
 
   ngAfterViewInit(): void {
     this.initThreeJS();
@@ -44,39 +44,58 @@ export class Home implements AfterViewInit, OnDestroy {
   onScroll(): void {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const scrollPercent = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+    const firstSectionHeight = window.innerHeight;
 
+    if (window.scrollY > firstSectionHeight) {
+      this.titleOffset = firstSectionHeight * 0.3;
+      this.footerOpacity = 0;
+    }
     // Solo el modelo rota (efecto parallax)
     this.targetRotation = scrollPercent * Math.PI * 2;
 
     // Efectos parallax para el texto
-    this.titleOffset = window.scrollY * 0.3;
+    this.titleOffset = window.scrollY * 1.3;
     this.subtitleOpacity = Math.max(0, 1 - scrollPercent * 0.8);
-    this.infoOffset = -window.scrollY * 0.2;
+    const stopPoint = window.innerHeight * 0.2;
+
+    if (window.scrollY < stopPoint) {
+      this.infoOffset = 0; // 👈 quieto al inicio
+    } else {
+      this.infoOffset = -(window.scrollY - stopPoint) * 1.2;
+    }
     this.footerOpacity = Math.max(0, 1 - scrollPercent);
     this.scrollProgress = scrollPercent * 100;
+
+    document.querySelectorAll('.section').forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8) {
+        el.classList.add('visible');
+      }
+    });
+
   }
 
   private initThreeJS(): void {
     const canvas = this.elementRef.nativeElement.querySelector('canvas');
 
     this.scene = new THREE.Scene();
-    this.scene.background = null; // Transparente para ver fondo negro
+    this.scene.background = null;
 
-    this.camera = new THREE.PerspectiveCamera(
-      45,
-      (window.innerWidth * 0.5) / window.innerHeight,
-      0.1,
-      1000
-    );
-    this.camera.position.set(3, 1.8, 3.5);
-    this.camera.lookAt(1.5, 0, 0);
+  this.camera = new THREE.PerspectiveCamera(
+  45,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+    this.camera.position.set(0, 1.5, 4);
+    this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: canvas,
       alpha: true, // Transparente
       antialias: true
     });
-    this.renderer.setSize(window.innerWidth * 0.5, window.innerHeight);
+this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setClearColor(0x000000, 0);
     this.renderer.shadowMap.enabled = true;
@@ -173,11 +192,11 @@ export class Home implements AfterViewInit, OnDestroy {
         const maxDim = Math.max(size.x, size.y, size.z);
         const scale = 2.5 / maxDim;
         this.model.scale.set(scale, scale, scale);
-        this.model.position.set(
-          -center.x * scale + 1.5,
-          -center.y * scale,
-          -center.z * scale
-        );
+    this.model.position.set(
+  -center.x * scale,
+  -center.y * scale,
+  -center.z * scale
+);
 
         this.scene.add(this.model);
       },
@@ -191,7 +210,7 @@ export class Home implements AfterViewInit, OnDestroy {
     );
   }
 
-private enhanceMetalMaterial(material: THREE.Material): void {
+  private enhanceMetalMaterial(material: THREE.Material): void {
     if (material instanceof THREE.MeshStandardMaterial) {
       material.metalness = 0.1;
       material.roughness = 0.15;
@@ -207,7 +226,7 @@ private enhanceMetalMaterial(material: THREE.Material): void {
       if (!material.emissive || material.emissive.getHex() === 0x000000) {
         material.emissive.setHex(0x111111);
       }
-}
+    }
   }
 
   private createBackupModel(): void {
@@ -274,11 +293,10 @@ private enhanceMetalMaterial(material: THREE.Material): void {
   @HostListener('window:resize')
   onResize(): void {
     if (this.camera && this.renderer) {
-      const width = window.innerWidth * 0.5;
-      const height = window.innerHeight;
-      this.camera.aspect = width / height;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(width, height);
+const width = window.innerWidth;
+const height = window.innerHeight;
+this.camera.aspect = width / height;
+this.renderer.setSize(width, height);
     }
   }
 }

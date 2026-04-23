@@ -15,9 +15,8 @@
 .canvas-wrapper {
   position: fixed;
   top: 0;
-  right: 0;
-  width: 50%;
-  height: 100vh;
+  left: 0;
+width: 100vw;  height: 100vh;
   z-index: 1;
   pointer-events: none;
 }
@@ -187,8 +186,80 @@ canvas {
     padding: 20px;
   }
 
-  .canvas-wrapper {
-    width: 100%;
-    opacity: 0.5;
-  }
+.canvas-wrapper {
+  left: 0;
+  width: 100%;
+}
+}
+/* Fondo global */
+body, html {
+  background: #000;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+
+
+/* Contenido por encima */
+.content {
+  position: relative;
+  z-index: 2;
+}
+
+/* SECCIONES */
+.section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-left: 5%;
+  padding-right: 55%; /* deja espacio para el modelo */
+  color: white;
+}
+
+/* Contenido interno */
+.section-inner {
+  max-width: 500px;
+}
+
+/* Título */
+.section-title {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Número en verde */
+.number {
+  color: #1be02b;
+  margin-right: 10px;
+}
+
+/* Texto */
+.section-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+/* Primer bloque ocupa pantalla completa */
+
+
+/* Scroll suave visual */
+.section-2,
+.section-3 {
+  opacity: 0.9;
+  transform: translateY(50px);
+  transition: all 0.6s ease;
+}
+
+/* Opcional: animación al entrar */
+.section-2.visible,
+.section-3.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.title-section,
+.bottom-content {
+  will-change: transform, opacity;
 }
