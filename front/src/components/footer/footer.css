@@ -6,6 +6,13 @@
   align-items: center;
   justify-content: center;
 }
+:host {
+  display: block;
+  height: 100vh;   /* 👈 ocupa toda la pantalla */
+  width: 100%;
+  background: #000;
+  color: white;
+}
 
 .footer-container {
   width: 100%;
@@ -15,8 +22,9 @@
 }
 
 .title {
-  font-size: 3rem;
-  margin-bottom: 10px;
+  font-size: 3.5rem;
+
+
   color: black;
 }
 
