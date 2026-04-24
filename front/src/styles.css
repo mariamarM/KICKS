@@ -1,15 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 /* Espacio para el navbar fijo */
-::root{
+:root{
   --BrandColor: #1be02b;
   --backColor: black;
 }
-@font-face {
-  font-family: 'BlackCrayon';
-  src: url('./assets/fonts/BlackCrayon-KyWA.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+
 body {
   margin: 0;
   padding-top: 70px;

@@ -4,7 +4,12 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+@font-face {
+  font-family: "BlackCrayon";
+  src: url("/assets/fonts/BlackCrayon-KyWA.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 :host {
   display: block;
   background: #000000;
@@ -71,13 +76,17 @@ canvas {
   bottom: 80px;
   left: 80px;
   z-index: 10;
+   font-family: "Nunito Sans", sans-serif;
   width:46%;
 }
+
 
 .info-section {
   display: flex;
   margin-bottom: -36px;
   transition: transform 0.3s ease-out;
+    font-family: "Nunito Sans", sans-serif;
+
 }
 
 .info-card {
@@ -119,10 +128,17 @@ canvas {
   width: 20%;
   padding: 20px;
 }
-.info-text {
-  font-family: "BlackCrayon", cursive;
+.info-text{
+    text-transform: uppercase;
+  font-size:12px;
+  line-height: 1.6;
+  color: #aaa;
+}
+.info-textCrayon {
+    font-family: 'BlackCrayon'  !important;
+
   text-transform: uppercase;
-  font-size:16px;
+  font-size:20px;
   line-height: 1.6;
   color: #aaa;
 }

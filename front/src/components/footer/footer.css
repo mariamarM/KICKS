@@ -13,7 +13,9 @@
   background: #000;
   color: white;
 }
-
+.upperText{
+  display:flex;
+}
 .footer-container {
   width: 100%;
   max-width: 600px;
@@ -72,7 +74,11 @@
 }
 
 .socials a {
-  text-decoration: none;
-  color: black;
-  font-weight: 500;
+   text-decoration: none;
+   color: black;
+   font-weight: 500;
+}
+
+.downText {
+   font-family: 'Nunito Sans', sans-serif;
 }

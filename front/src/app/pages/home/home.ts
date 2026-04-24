@@ -162,54 +162,57 @@ this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.lights.push(ambientLight);
   }
 
-  private loadModel(): void {
-    const loader = new GLTFLoader();
-    const modelPath = 'assets/NIMFA.glb';
+ private loadModel(): void {
+  const loader = new GLTFLoader();
+  const modelPath = 'assets/NIMFA.glb';
 
-    loader.load(
-      modelPath,
-      (gltf) => {
-        this.model = gltf.scene;
+  loader.load(
+    modelPath,
+    (gltf) => {
+      this.model = gltf.scene;
 
-        this.model.traverse((child) => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
+      this.model.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
 
-            if (child.material) {
-              if (Array.isArray(child.material)) {
-                child.material.forEach(mat => this.enhanceMetalMaterial(mat));
-              } else {
-                this.enhanceMetalMaterial(child.material);
-              }
+          if (child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach(mat => this.enhanceMetalMaterial(mat));
+            } else {
+              this.enhanceMetalMaterial(child.material);
             }
           }
-        });
+        }
+      });
 
-        const box = new THREE.Box3().setFromObject(this.model);
-        const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 2.5 / maxDim;
-        this.model.scale.set(scale, scale, scale);
-    this.model.position.set(
-  -center.x * scale,
-  -center.y * scale,
-  -center.z * scale
-);
+      const box = new THREE.Box3().setFromObject(this.model);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 2.5 / maxDim;
 
-        this.scene.add(this.model);
-      },
-      (progress) => {
-        console.log('Loading:', Math.round(progress.loaded / progress.total * 100) + '%');
-      },
-      (error) => {
-        console.error('Error loading model:', error);
-        this.createBackupModel();
-      }
-    );
-  }
+      // ESCALA PROPORCIONAL - mismo factor en todos los ejes
+      this.model.scale.set(scale, scale, scale);
 
+      // CENTRADO CORRECTO con escala uniforme
+      this.model.position.set(
+        -center.x * scale,
+        -center.y * scale,
+        -center.z * scale
+      );
+
+      this.scene.add(this.model);
+    },
+    (progress) => {
+      console.log('Loading:', Math.round(progress.loaded / progress.total * 100) + '%');
+    },
+    (error) => {
+      console.error('Error loading model:', error);
+      this.createBackupModel();
+    }
+  );
+}
   private enhanceMetalMaterial(material: THREE.Material): void {
     if (material instanceof THREE.MeshStandardMaterial) {
       material.metalness = 0.1;
