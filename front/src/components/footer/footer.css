@@ -14,13 +14,28 @@
   color: white;
 }
 .upperText{
-  display:flex;
+display: flex;
+    width: 80%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.downText{
+        display: flex;
+            gap: 36%;
+    margin-top: 49px;
+    font-family: "Nunito Sans", sans-serif;
+    justify-content: flex-start;
+    align-content: flex-start;
+    flex-direction: row;
+    align-items: flex-start;
 }
 .footer-container {
-  width: 100%;
-  max-width: 600px;
-  text-align: center;
-  padding: 20px;
+    width: 100%;
+        height: 69%;
+    max-width: 1650px;
+    text-align: center;
+    padding: 20px;
 }
 
 .title {
@@ -29,7 +44,10 @@
 
   color: black;
 }
-
+.line{
+  width:100%;
+  height: 1px;
+}
 .subtitle {
   font-size: 1rem;
   margin-bottom: 30px;
@@ -37,9 +55,11 @@
 }
 
 .newsletter-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+    display: flex;
+    width: 600px;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
 }
 
 .newsletter-form input {
@@ -67,10 +87,11 @@
 }
 
 .socials {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .socials a {
