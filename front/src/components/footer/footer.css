@@ -1,69 +1,94 @@
 .newsletter-footer {
   width: 100%;
-  height: 100vh; /* ocupa toda la pantalla */
+  height: 100vh;
   background-color: #1be02b;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 :host {
   display: block;
-  height: 100vh;   /* 👈 ocupa toda la pantalla */
+  height: 100vh;
   width: 100%;
   background: #000;
   color: white;
 }
-.upperText{
-display: flex;
-    width: 80%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+.upperText {
+  display: flex;
+  width: 80%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
-.downText{
-        display: flex;
-            gap: 36%;
-    margin-top: 49px;
-    font-family: "Nunito Sans", sans-serif;
-    justify-content: flex-start;
-    align-content: flex-start;
-    flex-direction: row;
-    align-items: flex-start;
+.downText {
+  display: flex;
+  gap: 28%;
+  width: 108%;
+  margin-top: 49px;
+  font-family: 'Nunito Sans', sans-serif;
+  justify-content: flex-start;
+  align-content: flex-start;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.contentCheck {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  align-items: center;
 }
 .footer-container {
-    width: 100%;
-        height: 69%;
-    max-width: 1650px;
-    text-align: center;
-    padding: 20px;
+  width: 100%;
+  height: 69%;
+  max-width: 1650px;
+  text-align: center;
+  padding: 20px;
+}
+.contenedorTitulo {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items: right;
+}
+.contenedorTitulo,
+h5 {
+  color: black;
+  font-size: 21px;
 }
 
 .title {
-  font-size: 3.5rem;
-
-
+  font-size: 5.5rem;
   color: black;
 }
-.line{
-  width:100%;
+.line {
+  width: 100%;
   height: 1px;
 }
+
 .subtitle {
-  font-size: 1rem;
-  margin-bottom: 30px;
+  font-size: 1.2rem;
   color: black;
+  font-weight: 800;
 }
 
 .newsletter-form {
-    display: flex;
-    width: 600px;
-    flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
+  display: flex;
+  margin-top: 80px;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
 }
-
+.inputQuestion {
+  font-size: 1.2rem;
+  color: black;
+  text-align: left;
+  text-transform: uppercase;
+}
 .newsletter-form input {
   padding: 12px;
+  width: 920px;
   border: none;
   border-bottom: 1px solid black;
   background: transparent;
@@ -89,17 +114,45 @@ display: flex;
 .socials {
     margin-top: 30px;
     display: flex;
+    width: 100%;
     justify-content: center;
     flex-direction: column;
     align-items: flex-start;
 }
+.containerRRSS {
+     display: flex;
+    width: 100%;
+    gap: 41px;
+    border-top: 1px solid black;
+    padding: 20px 0px;
+    MARGIN-TOP: 20PX;
+    justify-content: flex-start;
+}
 
+.containerRRSS a {
+  color: black;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.containerRRSS i {
+  display: block;
+}
+button {
+  background-color: black;
+  color: #1be02b;
+  font-weight: bold;
+  border-radius: 23px;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+}
 .socials a {
-   text-decoration: none;
-   color: black;
-   font-weight: 500;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
 }
 
 .downText {
-   font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
 }
