@@ -1,0 +1,161 @@
+.roulette-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden; /* Esto oculta cualquier scroll interno, incluido el horizontal */
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Espacio invisible para permitir el scroll */
+:host {
+  display: block;
+  height: 100vh;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.roulette-wheel {
+  position: absolute;
+  right: -500px;
+  width: 1200px;
+  height: 1200px;
+  border-radius: 50%;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Transición más marcada para el "snap" */
+  transform-origin: center center;
+  z-index: 5;
+}
+
+.product-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px; /* Más ancho para el frame rectangular */
+  height: 200px;
+  margin-top: -100px;
+  margin-left: -140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  filter: grayscale(1) opacity(0.3);
+}
+
+.product-item.active {
+  filter: grayscale(0) opacity(1);
+  transform: rotate(0deg) translateX(-600px) scale(1.2) !important;
+  z-index: 100;
+}
+
+.product-frame {
+  width: 100%;
+  height: 100%;
+  background: #050505;
+  border: 1px solid #222;
+  border-radius: 12px; /* Bordes un poco redondeados */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+}
+
+.product-item.active .product-frame {
+  border-color: #1be02b; /* Verde neón de la marca */
+  box-shadow: 0 0 50px rgba(27, 224, 43, 0.2);
+}
+
+.product-frame img {
+  width: 90%;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.5s;
+}
+
+.product-item.active img {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+/* Detalles del producto activo */
+.active-product-detail {
+  position: absolute;
+  left: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 450px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.detail-content {
+  pointer-events: all;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.brand-badge {
+  display: inline-block;
+  padding: 5px 15px;
+  background: #1be02b;
+  color: #000;
+  font-weight: 900;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border-radius: 2px;
+}
+
+.product-name {
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+}
+
+.product-price {
+  font-size: 2.5rem;
+  color: #888;
+  margin: 0 0 40px 0;
+  font-weight: 300;
+}
+
+.view-detail-btn {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 15px 40px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.view-detail-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Ocultar scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .product-name { font-size: 3rem; }
+  .roulette-wheel { right: -600px; }
+  .product-item { width: 140px; height: 140px; }
+}

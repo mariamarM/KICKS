@@ -1,1 +1,26 @@
-<p>product-detail works!</p>
+<div class="product-detail-container" *ngIf="product">
+  <div class="product-image">
+    <img [src]="product.image_url" [alt]="product.name">
+  </div>
+  <div class="product-info">
+    <h1>{{ product.name }}</h1>
+    <p class="brand">{{ product.brand }}</p>
+    <p class="price">{{ product.price }}€</p>
+    <div class="description">
+      <h3>Descripción</h3>
+      <p>{{ product.description }}</p>
+    </div>
+    <div class="add-to-cart-container">
+      <button class="add-to-cart-btn" [disabled]="!authService.isLoggedIn()">
+        {{ authService.isLoggedIn() ? 'AÑADIR AL CARRITO' : 'REGÍSTRATE PARA COMPRAR' }}
+      </button>
+      <p class="auth-warning" *ngIf="!authService.isLoggedIn()">
+        Debes estar <a routerLink="/register">registrado</a> para añadir productos.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!product" class="loading">
+  <p>Cargando producto...</p>
+</div>

@@ -2,8 +2,7 @@ import { Component, OnInit, HostListener, ChangeDetectorRef, NgZone } from '@ang
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.srvice';
-
+import { AuthService } from '../../app/services/auth';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -20,7 +19,7 @@ export class NavbarComponent implements OnInit {
   mobileMenuOpen: boolean = false;
   private lastUserCheck: string = '';
 
-  constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
+  constructor(private router: Router, private AuthService: AuthService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnInit(): void {
     this.checkUserStatus();
@@ -92,7 +91,7 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     localStorage.removeItem('user');
     localStorage.removeItem('cart');
-    this.authService.logout();
+    this.AuthService.logout();
     this.isLoggedIn = false;
     this.isAdmin = false;
     this.dropdownOpen = false;

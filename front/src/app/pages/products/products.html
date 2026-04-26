@@ -1,1 +1,20 @@
-<p>products works!</p>
+<div class="roulette-container" (wheel)="onWheel($event)">
+  <div class="active-product-detail" *ngIf="activeProduct">
+    <div class="detail-content">
+      <span class="brand-badge">{{ activeProduct.brand }}</span>
+      <h1 class="product-name">{{ activeProduct.name }}</h1>
+      <p class="product-price">{{ activeProduct.price }}€</p>
+      <button [routerLink]="['/products', activeProduct.slug]" class="view-detail-btn">VER DETALLES</button>
+    </div>
+  </div>
+
+  <!-- El círculo de la ruleta (75% fuera de pantalla a la derecha) -->
+  <div class="roulette-wheel" [style.transform]="'rotate(' + rotation + 'deg)'">
+    <div class="product-item" *ngFor="let p of products; let i = index" [class.active]="i === activeIndex"
+      [style.transform]="'rotate(' + (i * angleStep) + 'deg) translateX(-500px)'" (click)="setActive(i)">
+      <div class="product-frame">
+        <img [src]="p.image_url || 'assets/kicks.png'" [alt]="p.name">
+      </div>
+    </div>
+  </div>
+</div>
