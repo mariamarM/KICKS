@@ -25,7 +25,7 @@ export class Products implements OnInit {
   rotation: number = 0;
   activeIndex: number = 0;
   activeProduct: any = null;
-  angleStep: number = 60;
+  angleStep: number = 40;
 
   targetRotation: number = 0;
   isAnimating: boolean = false;

@@ -9,12 +9,45 @@
 
 }
 
+.login-title{
+  position:absolute;
+  top:20%;
+  left:5%;
+  display:flex;
+  flex-direction: row;
+  color: #1be02b;
+
+  gap:100px;
+}
+h2{
+  font-size: 6.3rem;
+    font-weight: bold;
+
+  letter-spacing: 0.2rem;
+}
+h4{
+  font-size: 1rem;
+}
+form{
+  display:flex;
+  flex-direction: column;
+  gap:30px;
+  
+}
+input {
+  padding: 12px;
+  width: 720px;
+  border: none;
+  border-bottom: 1px solid #1be02b;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+}
+input:focus{
+color: #1be02b;
+}
 .login-card {
-  backdrop-filter: blur(10px);
-  padding: 2rem;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 400px;
+
 }
 
 .login-card h2 {
@@ -23,21 +56,31 @@
   margin-bottom: 2rem;
 }
 
-input {
+.login-card {
+  display: flex;
+  gap: 30%;
   width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1rem;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 5px;
-  color: rgb(0, 0, 0);
+  max-width: 600px;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.contenedor3d {
+  width: 50%;
+  height: 400px;
+}
+
+.contenedor-form {
+  width: 50%;
+  padding: 20px;
 }
 
 button {
   width: 100%;
   padding: 0.8rem;
-  background-color: black;
-  border: 1px solid #1be02b;
-  color: #1be02b;
+  background-color: #1be02b;
+  font-weight: 800;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;
