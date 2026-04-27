@@ -12,14 +12,14 @@ import { RouterModule } from '@angular/router';
 export class Products implements OnInit {
 
   products: any[] = [
-    { name: 'Air Jordan 1', brand: 'Nike', price: 170, image_url: 'assets/kicks.png', slug: 'air-jordan-1' },
-    { name: 'Yeezy Boost 350', brand: 'Adidas', price: 220, image_url: 'assets/kicks.png', slug: 'yeezy-350' },
-    { name: 'New Balance 550', brand: 'New Balance', price: 120, image_url: 'assets/kicks.png', slug: 'nb-550' },
-    { name: 'Forum Low', brand: 'Adidas', price: 100, image_url: 'assets/kicks.png', slug: 'forum-low' },
-    { name: 'Dunk Low', brand: 'Nike', price: 110, image_url: 'assets/kicks.png', slug: 'dunk-low' },
-    { name: 'Old Skool', brand: 'Vans', price: 75, image_url: 'assets/kicks.png', slug: 'old-skool' },
-    { name: 'Chuck 70', brand: 'Converse', price: 90, image_url: 'assets/kicks.png', slug: 'chuck-70' },
-    { name: 'Gazelle', brand: 'Adidas', price: 100, image_url: 'assets/kicks.png', slug: 'gazelle' }
+    { name: 'Air Jordan 1', brand: 'Nike', price: 170, image_url: '/assets/kicks.png', slug: 'air-jordan-1' },
+    { name: 'Yeezy Boost 350', brand: 'Adidas', price: 220, image_url: '/assets/kicks.png', slug: 'yeezy-350' },
+    { name: 'New Balance 550', brand: 'New Balance', price: 120, image_url: '/assets/kicks.png', slug: 'nb-550' },
+    { name: 'Forum Low', brand: 'Adidas', price: 100, image_url: '/assets/kicks.png', slug: 'forum-low' },
+    { name: 'Dunk Low', brand: 'Nike', price: 110, image_url: '/assets/kicks.png', slug: 'dunk-low' },
+    { name: 'Old Skool', brand: 'Vans', price: 75, image_url: '/assets/kicks.png', slug: 'old-skool' },
+    { name: 'Chuck 70', brand: 'Converse', price: 90, image_url: '/assets/kicks.png', slug: 'chuck-70' },
+    { name: 'Gazelle', brand: 'Adidas', price: 100, image_url: '/assets/kicks.png', slug: 'gazelle' }
   ];
 
   rotation: number = 0;
@@ -39,13 +39,14 @@ export class Products implements OnInit {
   loadProducts() {
     this.productsService.getProducts().subscribe({
       next: (res: any) => {
+        console.log('Products loaded from API:', res);
         if (res.data && res.data.length > 0) {
           this.products = res.data;
-          this.angleStep = 360 / Math.max(this.products.length, 12); // Distribuir en el círculo
+          this.angleStep = 360 / Math.max(this.products.length, 12);
           this.updateActiveProduct();
         }
       },
-      error: (err) => console.error('Error loading products:', err)
+      error: (err) => console.error('Error loading products list:', err)
     });
   }
 

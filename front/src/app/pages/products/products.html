@@ -13,7 +13,7 @@
     <div class="product-item" *ngFor="let p of products; let i = index" [class.active]="i === activeIndex"
       [style.transform]="'rotate(' + (i * angleStep) + 'deg) translateX(-500px)'" (click)="setActive(i)">
       <div class="product-frame">
-        <img [src]="p.image_url || 'assets/kicks.png'" [alt]="p.name">
+        <img [src]="p.image_url || '/assets/kicks.png'" [alt]="p.name">
       </div>
     </div>
   </div>

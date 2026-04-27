@@ -23,8 +23,14 @@ export class ProductDetail implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.productsService.getProductBySlug(id)
-      .subscribe(res => {
-        this.product = res;
+      .subscribe({
+        next: (res) => {
+          this.product = res;
+        },
+        error: (err) => {
+          console.error('Error loading product detail:', err);
+          // Opcional: manejar el 404 redirigiendo o mostrando un mensaje
+        }
       });
   }
 }
