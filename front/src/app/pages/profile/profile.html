@@ -1,0 +1,32 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1>MI PERFIL</h1>
+    <p>Gestiona tu cuenta y revisa tus datos</p>
+  </div>
+
+  <div class="profile-card" *ngIf="user">
+    <div class="profile-avatar">
+      {{ user.full_name?.charAt(0) || user.name?.charAt(0) || 'U' }}
+    </div>
+    <div class="profile-details">
+      <div class="detail-group">
+        <label>Nombre</label>
+        <p>{{ user.full_name || user.name }}</p>
+      </div>
+      <div class="detail-group">
+        <label>Email</label>
+        <p>{{ user.email }}</p>
+      </div>
+      <div class="detail-group">
+        <label>Rol</label>
+        <p class="role-badge">{{ user.role === 'admin' ? 'Administrador' : 'Cliente' }}</p>
+      </div>
+    </div>
+    <button (click)="logout()" class="logout-btn">CERRAR SESIÓN</button>
+  </div>
+
+  <div *ngIf="!user" class="no-user">
+    <p>No has iniciado sesión.</p>
+    <button routerLink="/login" class="login-btn">IR AL LOGIN</button>
+  </div>
+</div>

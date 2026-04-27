@@ -2,25 +2,17 @@ import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/cor
 import { ProductsService } from '../../services/products';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 @Component({
   standalone: true,
   selector: 'app-products',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule], // 👈 Added FormsModule
   templateUrl: './products.html',
   styleUrl: './products.css'
 })
 export class Products implements OnInit {
 
-  products: any[] = [
-    { name: 'Air Jordan 1', brand: 'Nike', price: 170, image_url: '/assets/kicks.png', slug: 'air-jordan-1' },
-    { name: 'Yeezy Boost 350', brand: 'Adidas', price: 220, image_url: '/assets/kicks.png', slug: 'yeezy-350' },
-    { name: 'New Balance 550', brand: 'New Balance', price: 120, image_url: '/assets/kicks.png', slug: 'nb-550' },
-    { name: 'Forum Low', brand: 'Adidas', price: 100, image_url: '/assets/kicks.png', slug: 'forum-low' },
-    { name: 'Dunk Low', brand: 'Nike', price: 110, image_url: '/assets/kicks.png', slug: 'dunk-low' },
-    { name: 'Old Skool', brand: 'Vans', price: 75, image_url: '/assets/kicks.png', slug: 'old-skool' },
-    { name: 'Chuck 70', brand: 'Converse', price: 90, image_url: '/assets/kicks.png', slug: 'chuck-70' },
-    { name: 'Gazelle', brand: 'Adidas', price: 100, image_url: '/assets/kicks.png', slug: 'gazelle' }
-  ];
+  products: any[] = [];
 
   rotation: number = 0;
   activeIndex: number = 0;
@@ -29,25 +21,55 @@ export class Products implements OnInit {
 
   targetRotation: number = 0;
   isAnimating: boolean = false;
+
+  // Filtros
+  searchQuery: string = '';
+  selectedCategory: string = '';
+  categories: any[] = [];
   constructor(private productsService: ProductsService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.loadProducts();
+    this.loadCategories();
     this.updateActiveProduct();
   }
 
+  loadCategories() {
+    this.productsService.getCategories().subscribe(res => {
+      this.categories = res.data;
+    });
+  }
+
   loadProducts() {
-    this.productsService.getProducts().subscribe({
+    const params: any = {};
+    if (this.searchQuery) params.search = this.searchQuery;
+    if (this.selectedCategory) params.category = this.selectedCategory;
+
+    this.productsService.getProducts(params).subscribe({
       next: (res: any) => {
         console.log('Products loaded from API:', res);
-        if (res.data && res.data.length > 0) {
-          this.products = res.data;
-          this.angleStep = 360 / Math.max(this.products.length, 12);
-          this.updateActiveProduct();
+        if (res.data) {
+          this.products = res.data.length > 0 ? res.data : this.products; // Fallback if empty but API works
+          if (res.data.length > 0) {
+            this.angleStep = 360 / Math.max(this.products.length, 12);
+            this.activeIndex = 0; // Reset to first item
+            this.rotation = 0;
+            this.targetRotation = 0;
+            this.updateActiveProduct();
+          }
         }
       },
       error: (err) => console.error('Error loading products list:', err)
     });
+  }
+
+  onSearch() {
+    this.loadProducts();
+  }
+
+  onCategoryChange(categorySlug: string) {
+    this.selectedCategory = categorySlug;
+    this.loadProducts();
   }
 
   private snapTimeout: any;

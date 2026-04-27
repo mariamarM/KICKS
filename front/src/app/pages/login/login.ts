@@ -101,6 +101,7 @@ export class Login implements AfterViewInit {
         role: 'user'
       };
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('access_token', 'dummy-token-' + Math.random()); // 👈 FIX: Added token
       this.router.navigate(['/']);
     }
     else if (this.email === 'admin@test.com' && this.password === 'admin123') {
@@ -111,6 +112,7 @@ export class Login implements AfterViewInit {
         role: 'admin'
       };
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('access_token', 'dummy-admin-token-' + Math.random()); // 👈 FIX: Added token
       this.router.navigate(['/']);
     }
     else {

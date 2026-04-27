@@ -10,8 +10,20 @@
       <h3>Descripción</h3>
       <p>{{ product.description }}</p>
     </div>
+
+    <div class="sizes-section" *ngIf="availableSizes.length > 0">
+      <h3>Selecciona tu talla</h3>
+      <div class="sizes-grid">
+        <button *ngFor="let size of availableSizes" 
+                class="size-btn" 
+                [class.active]="selectedSize === size"
+                (click)="selectSize(size)">
+          {{ size }}
+        </button>
+      </div>
+    </div>
     <div class="add-to-cart-container">
-      <button class="add-to-cart-btn" [disabled]="!authService.isLoggedIn()">
+      <button class="add-to-cart-btn" [disabled]="!authService.isLoggedIn()" (click)="addToCart()">
         {{ authService.isLoggedIn() ? 'AÑADIR AL CARRITO' : 'REGÍSTRATE PARA COMPRAR' }}
       </button>
       <p class="auth-warning" *ngIf="!authService.isLoggedIn()">

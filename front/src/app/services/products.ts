@@ -21,4 +21,8 @@ export class ProductsService {
   getProductById(id: string) {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
+
+  getCategories() {
+    return this.http.get<any>('http://localhost:3000/api/categories');
+  }
 }

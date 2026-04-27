@@ -1,4 +1,21 @@
 <div class="roulette-container" (wheel)="onWheel($event)">
+  <!-- Buscador y Categorías (SOLO en catálogo) -->
+  <div class="catalogue-filters">
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Buscar zapatillas...">
+      <i class="search-icon">🔍</i>
+    </div>
+    <div class="category-pills">
+      <button class="category-pill" [class.active]="selectedCategory === ''" (click)="onCategoryChange('')">
+        Todas
+      </button>
+      <button *ngFor="let cat of categories" class="category-pill" 
+              [class.active]="selectedCategory === cat.slug" 
+              (click)="onCategoryChange(cat.slug)">
+        {{ cat.name }}
+      </button>
+    </div>
+  </div>
   <div class="active-product-detail" *ngIf="activeProduct">
     <div class="detail-content">
       <span class="brand-badge">{{ activeProduct.brand }}</span>

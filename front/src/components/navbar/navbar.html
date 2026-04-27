@@ -31,9 +31,6 @@
         <a routerLink="/products" routerLinkActive="active">
           <span>CATÁLOGO</span>
         </a>
-        <a routerLink="/my-orders" routerLinkActive="active">
-          <span>MIS PEDIDOS</span>
-        </a>
         <div class="user-menu dropdown">
           <button class="user-btn" (click)="toggleDropdown()">
             <span class="user-name">{{ userName }}</span>
@@ -48,6 +45,9 @@
             <div class="dropdown-divider"></div>
             <a routerLink="/profile" class="dropdown-item">
               Mi Perfil
+            </a>
+            <a routerLink="/orders" class="dropdown-item">
+               Mis Pedidos
             </a>
             <a routerLink="/cart" class="dropdown-item">
                Mi Carrito
@@ -154,7 +154,7 @@
         <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">
            CATÁLOGO
         </a>
-        <a routerLink="/my-orders" (click)="closeMobileMenu()" routerLinkActive="active">
+        <a routerLink="/orders" (click)="closeMobileMenu()" routerLinkActive="active">
           MIS PEDIDOS
         </a>
         <a routerLink="/cart" (click)="closeMobileMenu()" routerLinkActive="active">
