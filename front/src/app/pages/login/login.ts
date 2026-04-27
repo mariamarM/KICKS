@@ -28,27 +28,32 @@ export class Login implements AfterViewInit {
     this.initThree();
   }
 
+
   initThree(): void {
     const container = this.container.nativeElement;
 
     // Escena
     const scene = new THREE.Scene();
 
-    // Cámara
+    // 👇 Evita 0x0 si el contenedor aún no ha calculado tamaño
+    const width = container.clientWidth || 400;
+    const height = container.clientHeight || 400;
+
+    // ✅ Cámara corregida (near MUY importante)
     const camera = new THREE.PerspectiveCamera(
       75,
-      container.clientWidth / container.clientHeight,
-      0.1,
+      width / height,
+      0.1,   // 👈 antes 100 (esto rompía todo)
       1000
     );
-    camera.position.z = 3;
+    camera.position.z = 5;
 
     // Render
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(width, height);
     container.appendChild(renderer.domElement);
 
-    // Luz (MUY importante para modelos GLB)
+    // Luces
     const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
     scene.add(light);
 
@@ -56,23 +61,31 @@ export class Login implements AfterViewInit {
     dirLight.position.set(5, 5, 5);
     scene.add(dirLight);
 
-    // Cargar modelo
+    // Loader
     const loader = new GLTFLoader();
+    loader.load('assets/shoe.glb', (gltf: any) => {
 
-    loader.load('../../assets/shoe.glb', (gltf: any) => {
       const model = gltf.scene;
+
+      // Material
       model.traverse((child: any) => {
         if (child.isMesh) {
           child.material = new THREE.MeshStandardMaterial({
-            color: 0xaaaaaa,      // base gris (metal)
-            metalness: 0.9,       // muy metálico
-            roughness: 0.3        // algo de brillo (no espejo total)
+            color: 0x1be02b,
+            metalness: 0.9,
+            roughness: 0.3
           });
         }
       });
 
+      // ✅ Escala más segura
+      model.scale.set(1, 1, 1);
 
-      model.scale.set(1.5, 1.5, 1.5); // ajusta si hace falta
+      // ✅ Centrar modelo automáticamente
+      const box = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      model.position.sub(center);
+
       scene.add(model);
 
       // Animación

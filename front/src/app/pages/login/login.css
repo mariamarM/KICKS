@@ -57,16 +57,16 @@ color: #1be02b;
 }
 
 .login-card {
-  display: flex;
-  gap: 30%;
-  width: 100%;
-  max-width: 600px;
-  padding: 2rem;
-  border-radius: 10px;
+display: flex;
+     gap: 3%; 
+    width: 100%;
+    /* max-width: 600px; */
+    padding: 6rem;
+    border-radius: 10px;
 }
 
 .contenedor3d {
-  width: 50%;
+  width: 680px;
   height: 400px;
 }
 

@@ -9,6 +9,7 @@
 
 .login-container {
   display: flex;
+  flex-direction: row;
   width: 100%;
   max-width: 1200px;
   height: 80vh;
@@ -119,6 +120,7 @@
     flex-direction: column;
   }
   .canvas-wrapper {
-    display: none;
+    width: 300px;
+    height: 300px;
   }
 }
