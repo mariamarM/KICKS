@@ -47,14 +47,12 @@
               Mi Perfil
             </a>
             <a routerLink="/orders" class="dropdown-item">
-               Mis Pedidos
+              Mis Pedidos
             </a>
-            <a routerLink="/cart" class="dropdown-item">
-               Mi Carrito
-            </a>
+
             <div class="dropdown-divider"></div>
             <button (click)="logout()" class="dropdown-item logout">
-               Cerrar Sesión
+              Cerrar Sesión
             </button>
           </div>
         </div>
@@ -74,8 +72,7 @@
         <div class="user-menu dropdown">
           <button class="user-btn" (click)="toggleDropdown()">
             <span class="user-name">{{ userName }}</span>
-            <span class="dropdown-arrow" [class
-            .rotated]="dropdownOpen">▼</span>
+            <span class="dropdown-arrow" [class .rotated]="dropdownOpen">▼</span>
           </button>
 
           <div class="dropdown-menu" [class.show]="dropdownOpen">
@@ -85,10 +82,10 @@
             </div>
             <div class="dropdown-divider"></div>
             <a routerLink="/profile" class="dropdown-item">
-             Mi Perfil
+              Mi Perfil
             </a>
             <a routerLink="/admin/products" class="dropdown-item">
-               Gestionar Productos
+              Gestionar Productos
             </a>
             <a routerLink="/admin/orders" class="dropdown-item">
               Gestionar Pedidos
@@ -127,17 +124,17 @@
       <!-- Móvil: No logueado -->
       <ng-container *ngIf="!isLoggedIn">
         <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active">
-           INICIO
+          INICIO
         </a>
         <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">
-           CATÁLOGO
+          CATÁLOGO
         </a>
         <a routerLink="/cart" (click)="closeMobileMenu()" routerLinkActive="active">
-           CARRITO
+          CARRITO
         </a>
         <div class="mobile-divider"></div>
         <a routerLink="/login" (click)="closeMobileMenu()" class="mobile-login">
-           INICIAR SESIÓN
+          INICIAR SESIÓN
         </a>
       </ng-container>
 
@@ -149,47 +146,47 @@
         </div>
         <div class="mobile-divider"></div>
         <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active">
-           INICIO
+          INICIO
         </a>
         <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">
-           CATÁLOGO
+          CATÁLOGO
         </a>
         <a routerLink="/orders" (click)="closeMobileMenu()" routerLinkActive="active">
           MIS PEDIDOS
         </a>
         <a routerLink="/cart" (click)="closeMobileMenu()" routerLinkActive="active">
-           CARRITO
+          CARRITO
         </a>
         <div class="mobile-divider"></div>
         <button (click)="logout(); closeMobileMenu()" class="mobile-logout">
-           CERRAR SESIÓN
+          CERRAR SESIÓN
         </button>
       </ng-container>
 
-<!-- Móvil: Administrador -->
+      <!-- Móvil: Administrador -->
       <ng-container *ngIf="isLoggedIn && isAdmin">
         <div class="mobile-user-info">
           <span class="mobile-user-name">{{ userName }}</span>
         </div>
         <div class="mobile-divider"></div>
         <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active">
-           INICIO
+          INICIO
         </a>
         <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">
-           CATÁLOGO
+          CATÁLOGO
         </a>
         <a routerLink="/admin/products" (click)="closeMobileMenu()" routerLinkActive="active">
-           GESTIONAR PRODUCTOS
+          GESTIONAR PRODUCTOS
         </a>
         <a routerLink="/admin/orders" (click)="closeMobileMenu()" routerLinkActive="active">
-           GESTIONAR PEDIDOS
+          GESTIONAR PEDIDOS
         </a>
         <a routerLink="/cart" (click)="closeMobileMenu()" routerLinkActive="active">
-           CARRITO
+          CARRITO
         </a>
         <div class="mobile-divider"></div>
         <button (click)="logout(); closeMobileMenu()" class="mobile-logout">
-           CERRAR SESIÓN
+          CERRAR SESIÓN
         </button>
       </ng-container>
     </div>
