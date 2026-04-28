@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { ToastService } from '../../services/toast.service';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
@@ -23,7 +24,7 @@ export class Register implements AfterViewInit {
 
   @ViewChild('canvasContainer', { static: true }) container!: ElementRef;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private toastService: ToastService) { }
 
   ngAfterViewInit(): void {
     this.initThree();
@@ -84,7 +85,7 @@ export class Register implements AfterViewInit {
 
     this.authService.register(userData).subscribe({
       next: (res) => {
-        alert('Registro completado. Ahora puedes iniciar sesión.');
+        this.toastService.show('Registro completado con éxito. ¡Bienvenido!');
         this.router.navigate(['/login']);
       },
       error: (err) => {

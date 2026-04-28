@@ -144,6 +144,7 @@ img{
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   min-width: 220px;
+  padding:0px 20px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -162,7 +163,7 @@ img{
 }
 
 .user-email {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: #aaa;
   margin-bottom: 5px;
 }

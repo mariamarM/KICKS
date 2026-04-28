@@ -3,15 +3,14 @@
   <div class="catalogue-filters">
     <div class="search-box">
       <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Buscar zapatillas...">
-      <i class="search-icon">🔍</i>
+      <i class="fa-search"></i>
     </div>
     <div class="category-pills">
       <button class="category-pill" [class.active]="selectedCategory === ''" (click)="onCategoryChange('')">
         Todas
       </button>
-      <button *ngFor="let cat of categories" class="category-pill" 
-              [class.active]="selectedCategory === cat.slug" 
-              (click)="onCategoryChange(cat.slug)">
+      <button *ngFor="let cat of categories" class="category-pill" [class.active]="selectedCategory === cat.slug"
+        (click)="onCategoryChange(cat.slug)">
         {{ cat.name }}
       </button>
     </div>

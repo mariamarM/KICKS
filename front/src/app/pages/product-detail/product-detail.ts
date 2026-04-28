@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductsService } from '../../services/products';
 import { AuthService } from '../../services/auth';
 import { CartService } from '../../services/cart'; // 👈 Import CartService
+import { ToastService } from '../../services/toast.service'; // 👈 Import ToastService
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-product-detail',
@@ -21,7 +22,8 @@ export class ProductDetail implements OnInit {
     private route: ActivatedRoute,
     private productsService: ProductsService,
     public authService: AuthService,
-    private cartService: CartService // 👈 Inject CartService
+    private cartService: CartService, // 👈 Inject CartService
+    private toastService: ToastService // 👈 Inject ToastService
   ) {}
 
   ngOnInit() {
@@ -47,11 +49,11 @@ export class ProductDetail implements OnInit {
   addToCart() {
     if (this.product) {
       if (this.availableSizes.length > 0 && !this.selectedSize) {
-        alert('Por favor, selecciona una talla');
+        this.toastService.show('Por favor, selecciona una talla', 'error');
         return;
       }
       this.cartService.addToCart({ ...this.product, selectedSize: this.selectedSize });
-      alert(`${this.product.name} (Talla ${this.selectedSize}) añadido al carrito`);
+      this.toastService.show(`${this.product.name} (Talla ${this.selectedSize}) añadido al carrito`);
     }
   }
 

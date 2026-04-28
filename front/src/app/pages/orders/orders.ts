@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart';
+import { ToastService } from '../../services/toast.service';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -14,7 +15,7 @@ export class Orders implements OnInit {
   items: any[] = [];
   total: number = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private toastService: ToastService) {}
 
   ngOnInit() {
     this.cartService.cart$.subscribe(items => {
@@ -32,7 +33,7 @@ export class Orders implements OnInit {
   }
 
   checkout() {
-    alert('Función de pago no implementada aún. ¡Gracias por tu pedido!');
+    this.toastService.show('¡Pedido realizado con éxito! Gracias por tu compra.');
     this.cartService.clearCart();
   }
 }

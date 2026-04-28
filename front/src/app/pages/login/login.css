@@ -41,14 +41,13 @@ input {
   border-bottom: 1px solid #1be02b;
   background: transparent;
   outline: none;
+  color: #1be02b;
   font-size: 1rem;
 }
 input:focus{
 color: #1be02b;
 }
-.login-card {
 
-}
 
 .login-card h2 {
   color: white;
