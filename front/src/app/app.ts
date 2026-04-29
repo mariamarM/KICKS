@@ -6,10 +6,20 @@ import { NavbarComponent } from '../components/navbar/navbar';
 import { FooterComponent } from '../components/footer/footer';
 import { ToastComponent } from '../components/toast/toast';
 import { AuthService } from './services/auth';
+import { AdminProducts } from './pages/admin-products/admin-products';
+import { AdminOrders } from './pages/admin-orders/admin-orders';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, ToastComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    NavbarComponent,
+    FooterComponent,
+    ToastComponent,
+    AdminProducts,
+    AdminOrders
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

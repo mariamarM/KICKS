@@ -1,0 +1,202 @@
+.admin-container {
+  min-height: 100vh;
+  background: #000;
+  padding: 2rem;
+  color: #fff;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+.admin-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.orders-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.order-card {
+  background: #111;
+  border: 1px solid #1be02b;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+
+.order-card:hover {
+  box-shadow: 0 0 20px rgba(27, 224, 43, 0.2);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(27, 224, 43, 0.1);
+  border-bottom: 1px solid #1be02b;
+}
+
+.order-id {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1be02b;
+  letter-spacing: 1px;
+}
+
+.order-date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.order-body {
+  padding: 1.5rem;
+}
+
+.order-customer {
+  margin-bottom: 1rem;
+}
+
+.customer-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.25rem 0;
+}
+
+.customer-email {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0;
+}
+
+.order-items {
+  margin-bottom: 1rem;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #222;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  flex: 1;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.item-qty {
+  color: #1be02b;
+  font-weight: 600;
+  margin: 0 1rem;
+}
+
+.item-price {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.order-total {
+  text-align: right;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.order-total strong {
+  color: #1be02b;
+  font-weight: 800;
+}
+
+.order-address {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: #0a0a0a;
+  border-top: 1px solid #222;
+}
+
+.status-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-control label {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-select {
+  background: #111;
+  border: 1px solid #1be02b;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+.status-select:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(27, 224, 43, 0.5);
+}
+
+.status-indicator {
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #000;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 3rem;
+  color: #1be02b;
+  font-size: 1.2rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .order-footer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .status-control {
+    justify-content: space-between;
+  }
+}

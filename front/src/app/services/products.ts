@@ -22,6 +22,18 @@ export class ProductsService {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
 
+  createProduct(productData: FormData) {
+    return this.http.post<any>(this.baseUrl, productData);
+  }
+
+  updateProduct(id: string, productData: FormData) {
+    return this.http.put<any>(`${this.baseUrl}/${id}`, productData);
+  }
+
+  deleteProduct(id: string) {
+    return this.http.delete<any>(`${this.baseUrl}/${id}`);
+  }
+
   getCategories() {
     return this.http.get<any>('http://localhost:3000/api/categories');
   }

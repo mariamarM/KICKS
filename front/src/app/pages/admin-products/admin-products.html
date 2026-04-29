@@ -1,0 +1,95 @@
+<div class="admin-container">
+  <h1 class="admin-title">Gestión de Productos</h1>
+
+  <div class="products-list" *ngIf="!loading">
+    <div class="product-card" *ngFor="let product of products">
+      
+      <!-- Contenido principal del producto -->
+      <div class="product-content" [class.swiped]="isSwipeVisible(product.id)">
+        <div class="product-info">
+          <img *ngIf="product.image_url" [src]="product.image_url" [alt]="product.name" class="product-image">
+          <div class="product-details">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-category" *ngIf="product.categories?.name">{{ product.categories?.name }}</p>
+            <p class="product-price">{{ product.price }}€</p>
+            <p class="product-stock">Stock: {{ product.stock }}</p>
+            <p class="product-sizes">Tallas: {{ (product.sizes || []).join(', ') }}</p>
+          </div>
+        </div>
+        
+        <button class="edit-btn" (click)="openEditPanel(product)">
+          <i class="fas fa-edit"></i> Editar
+        </button>
+      </div>
+
+      <!-- Botón eliminar estilo iOS (aparece al swipes) -->
+      <div class="delete-swipe" [class.visible]="isSwipeVisible(product.id)">
+        <button class="delete-btn" (click)="confirmDelete(product)">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Indicador de swipe (cruz pequeña en esquina) -->
+      <div class="swipe-indicator" (click)="swipeToDelete(product.id)">
+        <i class="fas fa-times-circle"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de edición deslizante desde la derecha -->
+  <div class="edit-panel" [class.open]="selectedProduct !== null">
+    <div class="edit-panel-header">
+      <h2>Editar Producto</h2>
+      <button class="close-btn" (click)="closeEditPanel()">×</button>
+    </div>
+
+    <div class="edit-panel-content" *ngIf="selectedProduct">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="editForm.name" class="input-field">
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea [(ngModel)]="editForm.description" class="input-field" rows="3"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Precio (€)</label>
+          <input type="number" [(ngModel)]="editForm.price" class="input-field" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Stock</label>
+          <input type="number" [(ngModel)]="editForm.stock" class="input-field">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Marca</label>
+        <input type="text" [(ngModel)]="editForm.brand" class="input-field">
+      </div>
+
+      <div class="form-group">
+        <label>Tallas (separadas por coma)</label>
+        <input type="text" [(ngModel)]="editForm.sizes" class="input-field" placeholder="36, 37, 38, 39, 40">
+      </div>
+
+      <div class="form-group">
+        <label>URL de Imagen</label>
+        <input type="text" [(ngModel)]="editForm.image_url" class="input-field" placeholder="https://...">
+      </div>
+
+      <div class="form-group">
+        <label>ID de Categoría</label>
+        <input type="text" [(ngModel)]="editForm.category_id" class="input-field">
+      </div>
+
+      <button class="save-btn" (click)="saveProduct()">Guardar Cambios</button>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <p>Cargando productos...</p>
+  </div>
+</div>

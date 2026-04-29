@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { ToastService, Toast } from '../../app/services/toast.service';
+import { ToastService, ToastMessage } from '../../app/services/toast.service';
 
 @Component({
   selector: 'app-toast',
@@ -11,7 +11,7 @@ import { ToastService, Toast } from '../../app/services/toast.service';
   styleUrls: ['./toast.css']
 })
 export class ToastComponent implements OnInit, OnDestroy {
-  toasts: (Toast & { visible: boolean })[] = [];
+  toasts: (ToastMessage & { visible: boolean })[] = [];
   private sub!: Subscription;
 
   constructor(private toastService: ToastService) { }
