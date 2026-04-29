@@ -10,8 +10,32 @@
       <h3>Descripción</h3>
       <p>{{ product.description }}</p>
     </div>
+
+    <!-- Selector de tallas -->
+    <div class="sizes-container" *ngIf="product.sizes && product.sizes.length > 0">
+      <h3 class="sizes-title">
+        Talla
+        <span *ngIf="selectedSize" class="selected-size-badge">EU {{ selectedSize }}</span>
+      </h3>
+      <div class="sizes-grid">
+        <button
+          *ngFor="let size of product.sizes"
+          class="size-btn"
+          [class.selected]="selectedSize === size"
+          (click)="selectSize(size)"
+        >
+          {{ size }}
+        </button>
+      </div>
+      <p class="size-warning" *ngIf="sizeError">⚠ Selecciona una talla antes de continuar</p>
+    </div>
+
     <div class="add-to-cart-container">
-      <button class="add-to-cart-btn" [disabled]="!authService.isLoggedIn()">
+      <button
+        class="add-to-cart-btn"
+        [disabled]="!authService.isLoggedIn()"
+        (click)="addToCart()"
+      >
         {{ authService.isLoggedIn() ? 'AÑADIR AL CARRITO' : 'REGÍSTRATE PARA COMPRAR' }}
       </button>
       <p class="auth-warning" *ngIf="!authService.isLoggedIn()">

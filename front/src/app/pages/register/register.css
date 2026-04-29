@@ -1,4 +1,3 @@
-
 .login-container {
   display: flex;
   justify-content: center;
@@ -6,7 +5,6 @@
   min-height: 100vh;
   background: black;
   padding-top: 80px;
-
 }
 
 .login-title{
@@ -19,21 +17,23 @@
   color: #1be02b;
   gap:100px;
 }
+
 h2{
   font-size: 6.3rem;
-    font-weight: bold;
-
+  font-weight: bold;
   letter-spacing: 0.2rem;
 }
+
 h4{
   font-size: 1rem;
 }
+
 form{
   display:flex;
   flex-direction: column;
   gap:30px;
-  
 }
+
 input {
   padding: 12px;
   width: 720px;
@@ -42,18 +42,11 @@ input {
   background: transparent;
   outline: none;
   font-size: 1rem;
-}
-input:focus{
-color: #1be02b;
-}
-.login-card {
-
-}
-
-.login-card h2 {
   color: white;
-  text-align: center;
-  margin-bottom: 2rem;
+}
+
+input:focus{
+  color: #1be02b;
 }
 
 .login-card {
@@ -67,18 +60,12 @@ color: #1be02b;
 }
 
 .contenedor3d {
-  display: block;
-  width: 950px;
-  height: 986px;
-  touch-action: none;
   position: absolute;
-  top: 190px;
-  left: -10%;
-}
-
-.contenedor-form {
-  width: 50%;
-  padding: 20px;
+  top: 120px;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  pointer-events: none;
 }
 
 button {
@@ -93,7 +80,6 @@ button {
   font-size: 1rem;
 }
 
-
 .error {
   background: rgba(255,0,0,0.2);
   color: #ff6666;
@@ -101,16 +87,4 @@ button {
   border-radius: 5px;
   margin-bottom: 1rem;
   text-align: center;
-}
-
-.demo-info {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  font-size: 0.8rem;
-  color: #aaa;
-}
-
-.demo-info p {
-  margin: 0.3rem 0;
 }

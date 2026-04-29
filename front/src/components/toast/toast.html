@@ -1,0 +1,11 @@
+<div class="toast-wrapper">
+  <div
+    *ngFor="let t of toasts"
+    class="toast"
+    [class.visible]="t.visible"
+    (click)="dismiss(t.id)"
+  >
+    <span class="toast-bar"></span>
+    <p class="toast-message">{{ t.message }}</p>
+  </div>
+</div>

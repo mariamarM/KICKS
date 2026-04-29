@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductsService } from '../../services/products';
 import { AuthService } from '../../services/auth';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-product-detail',
   standalone: true,
@@ -13,6 +14,8 @@ import { CommonModule } from '@angular/common';
 export class ProductDetail implements OnInit {
 
   product: any;
+  selectedSize: number | null = null;
+  sizeError: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,11 +29,52 @@ export class ProductDetail implements OnInit {
       .subscribe({
         next: (res) => {
           this.product = res;
+          // Ordenar tallas numéricamente si existen
+          if (this.product.sizes) {
+            this.product.sizes = [...this.product.sizes].sort((a: number, b: number) => a - b);
+          }
         },
         error: (err) => {
           console.error('Error loading product detail:', err);
-          // Opcional: manejar el 404 redirigiendo o mostrando un mensaje
         }
       });
+  }
+
+  selectSize(size: number): void {
+    this.selectedSize = size;
+    this.sizeError = false;
+  }
+
+  addToCart(): void {
+    if (!this.authService.isLoggedIn()) return;
+
+    // Validar talla si el producto tiene tallas
+    if (this.product.sizes && this.product.sizes.length > 0 && !this.selectedSize) {
+      this.sizeError = true;
+      return;
+    }
+
+    // Guardar en localStorage (carrito)
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existing = cart.find((item: any) =>
+      item.id === this.product.id && item.size === this.selectedSize
+    );
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({
+        id: this.product.id,
+        name: this.product.name,
+        price: this.product.price,
+        image_url: this.product.image_url,
+        size: this.selectedSize,
+        quantity: 1
+      });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('cartUpdated'));
+    alert(`✅ ${this.product.name} (Talla ${this.selectedSize}) añadido al carrito`);
   }
 }

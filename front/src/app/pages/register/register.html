@@ -1,31 +1,27 @@
 <div class="login-container">
   <div class="login-title">
-    <h2 id="log-log">Login</h2>
-    <h4 routerLink="/register" style="cursor: pointer;">
-      Sign Up
+    <h2 id="log-log">Register</h2>
+    <h4 routerLink="/login" style="cursor: pointer;">
+      Login
     </h4>
+    <div class="contenedor3d" #canvasContainer></div>
   </div>
-  <div class="contenedor3d" #canvasContainer></div>
-
   <div class="login-card">
 
     <div class="error" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
 
-    <form (ngSubmit)="onLogin()">
+    <form (ngSubmit)="onRegister()">
+      <input type="text" [value]="name" (input)="name = $any($event.target).value" placeholder="Full Name" required>
+
       <input type="email" [value]="email" (input)="email = $any($event.target).value" placeholder="Email" required>
 
       <input type="password" [value]="password" (input)="password = $any($event.target).value" placeholder="Password"
         required>
 
-      <button type="submit">Iniciar Sesión</button>
+      <button type="submit">Registrarse</button>
     </form>
-    <!-- <div class="demo-info">
-      <p><strong>Cuentas de prueba:</strong></p>
-      <p> Usuario: user@test.com / 123456</p>
-      <p> Admin: admin@test.com / admin123</p>
-    </div> -->
 
   </div>
 
