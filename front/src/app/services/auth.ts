@@ -10,7 +10,7 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:3000/api/auth';
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) { }
 
   getUser(): any {
     const user = localStorage.getItem('user');
@@ -33,8 +33,14 @@ export class AuthService {
   login(credentials: any) {
     return this.http.post<any>(`${this.baseUrl}/login`, credentials).pipe(
       tap(res => {
-        localStorage.setItem('access_token', res.access_token);
-        localStorage.setItem('user', JSON.stringify(res.user));
+        const token = res.access_token || res.token;
+        const user = res.user || res;
+        if (token) {
+          localStorage.setItem('access_token', token);
+        }
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+        }
       })
     );
   }

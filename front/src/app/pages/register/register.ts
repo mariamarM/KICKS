@@ -83,14 +83,14 @@ export class Register implements AfterViewInit {
       full_name: this.name
     };
 
-    this.authService.register(userData).subscribe({
-      next: (res) => {
-        this.toastService.show('Registro completado con éxito. ¡Bienvenido!');
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.error || 'Error en el registro';
-      }
-    });
+     this.authService.register(userData).subscribe({
+       next: (res: any) => {
+         this.toastService.show('Registro completado con éxito. ¡Bienvenido!');
+         this.router.navigate(['/login']);
+       },
+       error: (err: any) => {
+         this.errorMessage = err.error?.error || 'Error en el registro';
+       }
+     });
   }
 }

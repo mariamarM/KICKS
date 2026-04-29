@@ -46,16 +46,16 @@ export class ProductDetail implements OnInit {
       });
   }
 
-  addToCart() {
-    if (this.product) {
-      if (this.availableSizes.length > 0 && !this.selectedSize) {
-        this.toastService.show('Por favor, selecciona una talla', 'error');
-        return;
-      }
-      this.cartService.addToCart({ ...this.product, selectedSize: this.selectedSize });
-      this.toastService.show(`${this.product.name} (Talla ${this.selectedSize}) añadido al carrito`);
-    }
-  }
+   addToCart() {
+     if (this.product) {
+       if (this.availableSizes.length > 0 && !this.selectedSize) {
+         this.toastService.show('Por favor, selecciona una talla');
+         return;
+       }
+       this.cartService.addToCart({ ...this.product, selectedSize: this.selectedSize });
+       this.toastService.show(`${this.product.name} (Talla ${this.selectedSize}) añadido al carrito`);
+     }
+   }
 
   selectSize(size: string) {
     this.selectedSize = size;
