@@ -1,38 +1,41 @@
 <div class="product-detail-container" *ngIf="product">
-  <div class="product-image">
-    <img [src]="product.image_url" [alt]="product.name">
-  </div>
-  <div class="product-info">
-    <h1>{{ product.name }}</h1>
-    <p class="brand">{{ product.brand }}</p>
-    <p class="price">{{ product.price }}€</p>
-    <div class="description">
-      <h3>Descripción</h3>
-      <p>{{ product.description }}</p>
+    <div class="product-image">
+        <img [src]="product.image_url" [alt]="product.name">
     </div>
+    <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        <p class="brand">{{ product.brand }}</p>
+        <p class="price">{{ product.price }}€</p>
+        <div class="description">
+            <h3>Descripción</h3>
+            <p>{{ product.description }}</p>
+        </div>
 
-    <div class="sizes-section" *ngIf="availableSizes.length > 0">
-      <h3>Selecciona tu talla</h3>
-      <div class="sizes-grid">
-        <button *ngFor="let size of availableSizes" 
-                class="size-btn" 
-                [class.active]="selectedSize === size"
-                (click)="selectSize(size)">
-          {{ size }}
-        </button>
-      </div>
+        <!-- Selector de tallas -->
+        <div class="sizes-container" *ngIf="product.sizes && product.sizes.length > 0">
+            <h3 class="sizes-title">
+                Talla
+            </h3>
+            <div class="sizes-grid">
+                <button *ngFor="let size of product.sizes" class="size-btn" [class.selected]="selectedSize === size"
+                    (click)="selectSize(size)">
+                    {{ size }}
+                </button>
+            </div>
+            <p class="size-warning" *ngIf="sizeError">⚠ Selecciona una talla antes de continuar</p>
+        </div>
+
+        <div class="add-to-cart-container">
+            <button class="add-to-cart-btn" [disabled]="!authService.isLoggedIn()" (click)="addToCart()">
+                {{ authService.isLoggedIn() ? 'AÑADIR AL CARRITO' : 'REGÍSTRATE PARA COMPRAR' }}
+            </button>
+            <p class="auth-warning" *ngIf="!authService.isLoggedIn()">
+                Debes estar <a routerLink="/register">registrado</a> para añadir productos.
+            </p>
+        </div>
     </div>
-    <div class="add-to-cart-container">
-      <button class="add-to-cart-btn" [disabled]="!authService.isLoggedIn()" (click)="addToCart()">
-        {{ authService.isLoggedIn() ? 'AÑADIR AL CARRITO' : 'REGÍSTRATE PARA COMPRAR' }}
-      </button>
-      <p class="auth-warning" *ngIf="!authService.isLoggedIn()">
-        Debes estar <a routerLink="/register">registrado</a> para añadir productos.
-      </p>
-    </div>
-  </div>
 </div>
 
 <div *ngIf="!product" class="loading">
-  <p>Cargando producto...</p>
+    <p>Cargando producto...</p>
 </div>

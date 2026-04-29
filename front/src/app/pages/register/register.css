@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .login-page {
   background: #000;
   min-height: 100vh;
@@ -123,4 +124,95 @@
     width: 300px;
     height: 300px;
   }
+=======
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: black;
+  padding-top: 80px;
+}
+
+.login-title{
+  position:absolute;
+  top:15%;
+  left:5%;
+  display:flex;
+  flex-direction: row;
+  align-items: baseline;
+  color: #1be02b;
+  gap:100px;
+}
+
+h2{
+  font-size: 6.3rem;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+}
+
+h4{
+  font-size: 1rem;
+}
+
+form{
+  display:flex;
+  flex-direction: column;
+  gap:30px;
+}
+
+input {
+  padding: 12px;
+  width: 720px;
+  border: none;
+  border-bottom: 1px solid #1be02b;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  color: white;
+}
+
+input:focus{
+  color: #1be02b;
+}
+
+.login-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+  margin-right: 5%;
+}
+
+.contenedor3d {
+  position: absolute;
+  top: 120px;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  pointer-events: none;
+}
+
+button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #1be02b;
+  font-weight: 800;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.error {
+  background: rgba(255,0,0,0.2);
+  color: #ff6666;
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  text-align: center;
+>>>>>>> feature-login
 }

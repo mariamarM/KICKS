@@ -32,9 +32,16 @@ export class Register implements AfterViewInit {
 
   initThree(): void {
     const container = this.container.nativeElement;
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(65, container.clientWidth / container.clientHeight, 100, 1000);
-    camera.position.z = 212;
+
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 3;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -48,18 +55,10 @@ export class Register implements AfterViewInit {
     scene.add(dirLight);
 
     const loader = new GLTFLoader();
-    loader.load('../../assets/shoe.glb', (gltf: any) => {
+    loader.load('assets/shoe.glb', (gltf: any) => {
       const model = gltf.scene;
-      model.traverse((child: any) => {
-        if (child.isMesh) {
-          child.material = new THREE.MeshStandardMaterial({
-            color: 0x1be02b, // Color neón para variar un poco
-            metalness: 0.9,
-            roughness: 0.3
-          });
-        }
-      });
-      model.scale.set(1.5, 1.5, 1.5);
+      model.position.y = -0.5;
+      model.scale.set(1.8, 1.8, 1.8);
       scene.add(model);
 
       const animate = () => {
@@ -67,7 +66,12 @@ export class Register implements AfterViewInit {
         model.rotation.y += 0.01;
         renderer.render(scene, camera);
       };
+
       animate();
+    },
+    undefined,
+    (error: any) => {
+      console.error('Error cargando modelo:', error);
     });
   }
 
@@ -78,18 +82,19 @@ export class Register implements AfterViewInit {
     }
 
     const userData = {
+      full_name: this.name,
       email: this.email,
-      password: this.password,
-      full_name: this.name
+      password: this.password
     };
 
     this.authService.register(userData).subscribe({
-      next: (res) => {
+      next: () => {
         this.toastService.show('Registro completado con éxito. ¡Bienvenido!');
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.error || 'Error en el registro';
+        this.errorMessage = err.error?.error || 'Error al registrar el usuario. Inténtalo de nuevo.';
+        console.error(err);
       }
     });
   }
