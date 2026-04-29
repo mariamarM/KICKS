@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-<div class="toast-container">
-  <div *ngFor="let toast of toasts" class="toast" [class.fade-out]="toast.fading">
-    <span class="toast-message">{{ toast.message }}</span>
-    <button class="toast-close" (click)="removeToast(toast)">×</button>
-=======
 <div class="toast-wrapper">
   <div
     *ngFor="let t of toasts"
@@ -13,6 +7,5 @@
   >
     <span class="toast-bar"></span>
     <p class="toast-message">{{ t.message }}</p>
->>>>>>> feature-login
   </div>
 </div>

@@ -12,16 +12,19 @@
       {{ errorMessage }}
     </div>
 
-    <form (ngSubmit)="onRegister()">
-      <input type="text" [value]="name" (input)="name = $any($event.target).value" placeholder="Full Name" required>
+     <form (ngSubmit)="onRegister()">
+       <input type="text" [value]="name" (input)="name = $any($event.target).value" placeholder="Full Name" required>
 
-      <input type="email" [value]="email" (input)="email = $any($event.target).value" placeholder="Email" required>
+       <input type="email" [value]="email" (input)="email = $any($event.target).value" placeholder="Email" required>
 
-      <input type="password" [value]="password" (input)="password = $any($event.target).value" placeholder="Password"
-        required>
+       <input type="password" [value]="password" (input)="password = $any($event.target).value" placeholder="Password"
+         required>
 
-      <button type="submit">Registrarse</button>
-    </form>
+       <input type="password" [value]="confirmPassword" (input)="confirmPassword = $any($event.target).value" placeholder="Confirm Password"
+         required>
+
+       <button type="submit">Registrarse</button>
+     </form>
 
   </div>
 

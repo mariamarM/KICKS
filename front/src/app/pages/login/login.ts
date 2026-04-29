@@ -32,7 +32,8 @@ export class Login implements AfterViewInit {
   }
 
   onLogin(): void {
-    this.authService.login(this.email, this.password).subscribe({
+    const credentials = { email: this.email, password: this.password };
+    this.authService.login(credentials).subscribe({
       next: () => {
         this.toastService.show('Inicio de sesión exitoso');
         this.router.navigate(['/']);
