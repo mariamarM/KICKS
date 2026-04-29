@@ -27,14 +27,15 @@
         </div>
 
         <div class="order-address" *ngIf="order.shipping_address">
-          📍 {{ order.shipping_address }}
+          {{ order.shipping_address }}
         </div>
       </div>
 
       <div class="order-footer">
         <div class="status-control">
           <label>Estado:</label>
-          <select [value]="order.status" (change)="updateStatus(order.id, $any($event.target).value)" class="status-select">
+          <select [value]="order.status" (change)="updateStatus(order.id, $any($event.target).value)"
+            class="status-select">
             <option value="pending">Pendiente</option>
             <option value="confirmed">Confirmado</option>
             <option value="shipped">Enviado</option>
