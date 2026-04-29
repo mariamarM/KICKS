@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-export interface ToastMessage {
+export interface Toast {
   message: string;
-  type: 'success' | 'error' | 'info';
-  duration?: number;
+  id: number;
+  type?: 'success' | 'error' | 'info';
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
-  private toastSubject = new Subject<ToastMessage>();
-  toast$ = this.toastSubject.asObservable();
+  private _toasts$ = new Subject<Toast>();
+  toasts$ = this._toasts$.asObservable();
+  private counter = 0;
 
-  show(message: string, type: 'success' | 'error' | 'info' = 'success', duration: number = 3000) {
-    this.toastSubject.next({ message, type, duration });
+  show(message: string, type: 'success' | 'error' | 'info' = 'success'): void {
+    this._toasts$.next({ message, id: ++this.counter, type });
   }
 }
