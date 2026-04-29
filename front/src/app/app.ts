@@ -1,24 +1,19 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { Home } from "./pages/home/home";
+import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../components/navbar/navbar';
 import { FooterComponent } from '../components/footer/footer';
 import { ToastComponent } from '../components/toast/toast';
 import { AuthService } from './services/auth';
-import { AdminProducts } from './pages/admin-products/admin-products';
-import { AdminOrders } from './pages/admin-orders/admin-orders';
 
 @Component({
   selector: 'app-root',
   imports: [
     CommonModule,
-    RouterOutlet,
+    RouterModule,
     NavbarComponent,
     FooterComponent,
-    ToastComponent,
-    AdminProducts,
-    AdminOrders
+    ToastComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
