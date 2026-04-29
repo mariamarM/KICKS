@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductsService } from '../../services/products';
 import { AuthService } from '../../services/auth';
 import { CommonModule } from '@angular/common';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -20,7 +21,8 @@ export class ProductDetail implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productsService: ProductsService,
-    public authService: AuthService
+    public authService: AuthService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -73,8 +75,8 @@ export class ProductDetail implements OnInit {
       });
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    window.dispatchEvent(new Event('cartUpdated'));
-    alert(`✅ ${this.product.name} (Talla ${this.selectedSize}) añadido al carrito`);
+     localStorage.setItem('cart', JSON.stringify(cart));
+     window.dispatchEvent(new Event('cartUpdated'));
+     this.toastService.show(`${this.product.name} (Talla ${this.selectedSize}) añadido al carrito`);
   }
 }

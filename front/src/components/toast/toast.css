@@ -17,7 +17,6 @@
   border-radius: 8px;
   min-width: 250px;
   max-width: 400px;
-  box-shadow: 0 0 20px 2px #39ff14, 0 0 40px 4px #39ff14 inset;
   border: 1px solid #39ff14;
   transform: translateY(-100%);
   opacity: 0;
