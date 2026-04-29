@@ -6,25 +6,12 @@ import { NavbarComponent } from '../components/navbar/navbar';
 import { FooterComponent } from '../components/footer/footer';
 import { ToastComponent } from '../components/toast/toast';
 import { AuthService } from './services/auth';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    NavbarComponent,
-    FooterComponent,
-    ToastComponent,
-    HttpClientModule
-  ],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, ToastComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css',
-  providers: [
-    AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ]
+  styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('front');

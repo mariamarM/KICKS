@@ -7,7 +7,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-import { AuthService } from '../../services/auth';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
@@ -25,7 +24,7 @@ export class Login implements AfterViewInit {
 
   @ViewChild('canvasContainer', { static: true }) container!: ElementRef;
 
-  constructor(private router: Router, private authService: AuthService, private toastService: ToastService) { }
+  constructor(private router: Router, private toastService: ToastService) { }
 
   ngAfterViewInit(): void {
     this.initThree();
@@ -36,17 +35,34 @@ export class Login implements AfterViewInit {
   }
 
   onLogin(): void {
-    const credentials = { email: this.email, password: this.password };
-    this.authService.login(credentials).subscribe({
-      next: () => {
-        this.toastService.show('Inicio de sesión exitoso');
-        this.router.navigate(['/']);
-      },
-      error: (err: any) => {
-        console.error('Login error:', err);
-        this.errorMessage = err.error?.error || 'Credenciales inválidas';
-      }
-    });
+    // Credenciales hardcodeadas para testing
+    if (this.email === 'user@test.com' && this.password === '123456') {
+      const user = {
+        id: 1,
+        name: 'Usuario Normal',
+        email: this.email,
+        role: 'user'
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('access_token', 'dummy-token-' + Date.now());
+      this.toastService.show('Inicio de sesión exitoso');
+      this.router.navigate(['/']);
+    }
+    else if (this.email === 'admin@test.com' && this.password === 'admin123') {
+      const user = {
+        id: 2,
+        name: 'Administrador',
+        email: this.email,
+        role: 'admin'
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('access_token', 'dummy-admin-token-' + Date.now());
+      this.toastService.show('Inicio de sesión exitoso');
+      this.router.navigate(['/']);
+    }
+    else {
+      this.errorMessage = 'Email o contraseña incorrectos';
+    }
   }
 
   initThree(): void {
