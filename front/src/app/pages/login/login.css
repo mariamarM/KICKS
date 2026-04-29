@@ -27,6 +27,7 @@ h2{
 }
 h4{
   font-size: 1rem;
+  z-index:1000000;
 }
 form{
   display:flex;
@@ -57,16 +58,20 @@ color: #1be02b;
 
 .login-card {
 display: flex;
-     gap: 3%; 
-    width: 100%;
-    /* max-width: 600px; */
+    /* gap: 3%; */
+    width: 68%;
     padding: 6rem;
     border-radius: 10px;
+    justify-content: flex-end;
 }
 
 .contenedor3d {
-  width: 680px;
-  height: 400px;
+     top: 144px;
+    left: -9%;
+    position: absolute;
+    width: 950px;
+    height: 950px;
+
 }
 
 .contenedor-form {
