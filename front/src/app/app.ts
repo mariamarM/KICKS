@@ -16,5 +16,5 @@ import { CommonModule } from '@angular/common';
 export class App {
   protected readonly title = signal('front');
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService) { }
 }
