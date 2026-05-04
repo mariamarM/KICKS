@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-<<<<<<< HEAD
-import { ToastService, Toast } from '../../app/services/toast.service';
-=======
+
+
 import { ToastService, ToastMessage } from '../../app/services/toast.service';
->>>>>>> feature-admin
+
 
 @Component({
   selector: 'app-toast',
@@ -15,11 +14,7 @@ import { ToastService, ToastMessage } from '../../app/services/toast.service';
   styleUrls: ['./toast.css']
 })
 export class ToastComponent implements OnInit, OnDestroy {
-<<<<<<< HEAD
-  toasts: (Toast & { visible: boolean })[] = [];
-=======
   toasts: (ToastMessage & { visible: boolean })[] = [];
->>>>>>> feature-admin
   private sub!: Subscription;
 
   constructor(private toastService: ToastService) {}
@@ -29,15 +24,8 @@ export class ToastComponent implements OnInit, OnDestroy {
       const t = { ...toast, visible: true };
       this.toasts.push(t);
 
-<<<<<<< HEAD
-      // Ocultar tras 3s con animación de salida
       setTimeout(() => {
         t.visible = false;
-        // Eliminar del array tras la animación de salida (300ms)
-=======
-      setTimeout(() => {
-        t.visible = false;
->>>>>>> feature-admin
         setTimeout(() => {
           this.toasts = this.toasts.filter(x => x.id !== toast.id);
         }, 400);
