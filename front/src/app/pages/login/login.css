@@ -57,25 +57,6 @@ color: #1be02b;
 }
 
 .login-card {
-<<<<<<< HEAD
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
-  max-width: 1200px;
-  padding: 2rem;
-  margin-right: 5%;
-}
-
-.contenedor3d {
-  display: block;
-  width: 950px;
-  height: 986px;
-  touch-action: none;
-  position: absolute;
-  top: 190px;
-  left: -10%;
-=======
 display: flex;
     /* gap: 3%; */
     width: 68%;
@@ -91,7 +72,6 @@ display: flex;
     width: 950px;
     height: 950px;
 
->>>>>>> feature-admin
 }
 
 .contenedor-form {
