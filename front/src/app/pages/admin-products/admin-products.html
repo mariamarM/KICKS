@@ -1,0 +1,93 @@
+<div class="admin-container">
+
+  <h1 class="admin-title">Gestión de productos</h1>
+
+  <!-- 🔍 SEARCH -->
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Buscar producto..."
+      [(ngModel)]="searchTerm"
+      class="search-input"
+    />
+  </div>
+
+  <!-- 🧱 LAYOUT 3 COLUMNAS -->
+  <div class="layout">
+
+    <!-- 📦 PRODUCTOS (50%) -->
+    <div class="products-section">
+
+      <div class="products-list">
+
+        <div
+          class="product-card"
+          *ngFor="let product of filteredProducts"
+          (click)="openEditPanel(product)"
+          [class.active]="selectedProduct?.id === product.id"
+        >
+
+          <img [src]="product.image_url" class="product-image" />
+
+          <div class="product-main">
+            <h3>{{ product.name }}</h3>
+            <span class="price">{{ product.price }}€</span>
+          </div>
+
+          <button class="delete-mini" (click)="confirmDelete(product); $event.stopPropagation()">
+            ✕
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="product-panel" [class.open]="selectedProduct">
+
+      <div class="panel-card large">
+
+        <h2>Editar producto</h2>
+
+         <img *ngIf="selectedProduct?.image_url" [src]="selectedProduct?.image_url" class="panel-image">
+
+        <input [(ngModel)]="editForm.name" placeholder="Nombre" class="input-field">
+        <input [(ngModel)]="editForm.price" placeholder="Precio" class="input-field">
+        <input [(ngModel)]="editForm.stock" placeholder="Stock" class="input-field">
+        <input [(ngModel)]="editForm.brand" placeholder="Marca" class="input-field">
+        <input [(ngModel)]="editForm.category_id" placeholder="Categoria" class="input-field">
+        <input [(ngModel)]="editForm.sizes" placeholder="Tallas" class="input-field">
+        <textarea [(ngModel)]="editForm.description" class="input-field textarea"></textarea>
+
+        <button class="save-btn" (click)="saveProduct()">Guardar</button>
+         <button class="delete-btn" (click)="confirmDelete(selectedProduct)">Eliminar</button>
+
+      </div>
+
+    </div>
+
+    <div class="product-panel create-panel">
+
+      <div class="panel-card large">
+
+        <h2>Crear producto</h2>
+
+        <input [(ngModel)]="createForm.name" placeholder="Nombre" class="input-field">
+        <input [(ngModel)]="createForm.price" placeholder="Precio" class="input-field">
+        <input [(ngModel)]="createForm.stock" placeholder="Stock" class="input-field">
+        <input [(ngModel)]="createForm.brand" placeholder="Marca" class="input-field">
+        <input [(ngModel)]="createForm.category_id" placeholder="Categoria" class="input-field">
+        <input [(ngModel)]="createForm.sizes" placeholder="Tallas" class="input-field">
+        <input [(ngModel)]="createForm.image_url" placeholder="Imagen URL" class="input-field">
+        <textarea [(ngModel)]="createForm.description" class="input-field textarea"></textarea>
+
+        <button class="save-btn" (click)="createProduct()">Crear producto</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="login-container">
   <div class="login-title">
     <h2 id="log-log">Register</h2>
@@ -5,6 +6,51 @@
       Login
     </h4>
     <div class="contenedor3d" #canvasContainer></div>
+=======
+<div class="login-page">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <h1>Sign up</h1>
+          <p>Join the KICKS community</p>
+        </div>
+    <div class="login-footer">
+            <a routerLink="/login">Log in</a>
+          </div>
+        <form (ngSubmit)="onRegister()">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" [(ngModel)]="name" name="name" required >
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="email" name="email" required >
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" [(ngModel)]="password" name="password" required placeholder="••••••••">
+          </div>
+
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required placeholder="••••••••">
+          </div>
+
+          <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+          <button type="submit" class="login-btn">CREATE ACCOUNT</button>
+
+
+        </form>
+      </div>
+
+      <div class="canvas-wrapper">
+        <div #canvasContainer class="canvas-container"></div>
+      </div>
+    </div>
+>>>>>>> feature-admin
   </div>
   <div class="login-card">
 

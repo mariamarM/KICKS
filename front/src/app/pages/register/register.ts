@@ -87,6 +87,7 @@ export class Register implements AfterViewInit {
       password: this.password
     };
 
+<<<<<<< HEAD
     this.authService.register(userData).subscribe({
       next: () => {
         this.toastService.show('Registro completado con éxito. ¡Bienvenido!');
@@ -97,5 +98,16 @@ export class Register implements AfterViewInit {
         console.error(err);
       }
     });
+=======
+     this.authService.register(userData).subscribe({
+       next: (res: any) => {
+         this.toastService.show('Registro completado con éxito. ¡Bienvenido!');
+         this.router.navigate(['/login']);
+       },
+       error: (err: any) => {
+         this.errorMessage = err.error?.error || 'Error en el registro';
+       }
+     });
+>>>>>>> feature-admin
   }
 }

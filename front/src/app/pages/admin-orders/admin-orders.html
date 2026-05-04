@@ -1,0 +1,61 @@
+<div class="admin-container">
+  <h1 class="admin-title">Gestión de Pedidos</h1>
+
+  <div class="orders-list" *ngIf="!loading">
+    <div class="order-card" *ngFor="let order of orders">
+      <div class="order-header">
+        <div class="order-id">Pedido #{{ order.id.slice(0, 8) }}</div>
+        <div class="order-date">{{ formatDate(order.created_at) }}</div>
+      </div>
+
+      <div class="order-body">
+        <div class="order-customer">
+          <p class="customer-name">{{ order.users?.full_name || 'Cliente' }}</p>
+          <p class="customer-email">{{ order.user_id.slice(0, 8) }}...</p>
+        </div>
+
+        <div class="order-items">
+          <div class="item" *ngFor="let item of order.order_items">
+            <span class="item-name">{{ item.products.name }}</span>
+            <span class="item-qty">x{{ item.quantity }}</span>
+            <span class="item-price">{{ item.unit_price }}€</span>
+          </div>
+        </div>
+
+        <div class="order-total">
+          Total: <strong>{{ order.total_amount }}€</strong>
+        </div>
+
+        <div class="order-address" *ngIf="order.shipping_address">
+          {{ order.shipping_address }}
+        </div>
+      </div>
+
+      <div class="order-footer">
+        <div class="status-control">
+          <label>Estado:</label>
+          <select [value]="order.status" (change)="updateStatus(order.id, $any($event.target).value)"
+            class="status-select">
+            <option value="pending">Pendiente</option>
+            <option value="confirmed">Confirmado</option>
+            <option value="shipped">Enviado</option>
+            <option value="delivered">Entregado</option>
+            <option value="cancelled">Cancelado</option>
+          </select>
+        </div>
+
+        <div class="status-indicator" [style.background]="getStatusColor(order.status)">
+          {{ getStatusLabel(order.status) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <p>Cargando pedidos...</p>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && orders.length === 0">
+    <p>No hay pedidos registrados</p>
+  </div>
+</div>

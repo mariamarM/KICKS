@@ -18,8 +18,8 @@
         <p>{{ user.email }}</p>
       </div>
       <div class="detail-group">
-        <label>Rol</label>
-        <p class="role-badge">{{ user.role === 'admin' ? 'Administrador' : 'Cliente' }}</p>
+        <label>Plan</label>
+        <p class="role-badge">{{ user.role === 'admin' ? 'Administrador' : 'Basico' }}</p>
       </div>
     </div>
     <button (click)="logout()" class="logout-btn">CERRAR SESIÓN</button>

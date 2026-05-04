@@ -7,6 +7,11 @@ import { Orders } from './pages/orders/orders';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { Profile } from './pages/profile/profile';
+<<<<<<< HEAD
+=======
+import { AdminProducts } from './pages/admin-products/admin-products';
+import { AdminOrders } from './pages/admin-orders/admin-orders';
+>>>>>>> feature-admin
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -17,5 +22,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'profile', component: Profile },
+  { path: 'admin/products', component: AdminProducts },
+  { path: 'admin/orders', component: AdminOrders },
   { path: '**', redirectTo: '' }
 ];
