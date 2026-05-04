@@ -11,7 +11,7 @@ export interface ToastMessage {
 @Injectable({
   providedIn: 'root'
 })
-export class Toast {
+export class ToastService {
   private _toasts$ = new Subject<ToastMessage>();
   toasts$ = this._toasts$.asObservable();
   private counter = 0;
