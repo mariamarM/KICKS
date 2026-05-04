@@ -33,7 +33,7 @@ form{
   display:flex;
   flex-direction: column;
   gap:30px;
-  
+
 }
 input {
   padding: 12px;

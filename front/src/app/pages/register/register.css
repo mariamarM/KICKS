@@ -1,64 +1,26 @@
+.login-page {
+  background: #000;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .login-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: black;
-  padding-top: 80px;
-}
-
-.login-title{
-  position:absolute;
-  top:15%;
-  left:5%;
-  display:flex;
   flex-direction: row;
-  align-items: baseline;
-  color: #1be02b;
-  gap:100px;
-}
-
-h2{
-  font-size: 6.3rem;
-  font-weight: bold;
-  letter-spacing: 0.2rem;
-}
-
-h4{
-  font-size: 1rem;
-}
-
-form{
-  display:flex;
-  flex-direction: column;
-  gap:30px;
-}
-
-input {
-  padding: 12px;
-  width: 720px;
-  border: none;
-  border-bottom: 1px solid #1be02b;
-  background: transparent;
-  outline: none;
-  font-size: 1rem;
-  color: white;
-}
-
-input:focus{
-  color: #1be02b;
+  width: 100%;
+  max-width: 1200px;
+  height: 80vh;
+  gap: 50px;
+  padding: 20px;
 }
 
 .login-card {
+  flex: 1;
   display: flex;
   flex-direction: column;
-<<<<<<< HEAD
-  align-items: flex-end;
-  width: 100%;
-  max-width: 1200px;
-  padding: 2rem;
-  margin-right: 5%;
-=======
   justify-content: center;
   padding: 40px;
   z-index: 10;
@@ -69,7 +31,7 @@ input:focus{
   font-weight: 900;
   color: #1be02b;
   margin: 0;
-  letter-spacing: 2px;
+  letter-spacing: -2px;
 }
 
 .login-header p {
@@ -94,44 +56,32 @@ input:focus{
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid #1be02b;
+  border-bottom: 1px solid #333;
   padding: 10px 0;
   color: #fff;
   font-size: 1rem;
   transition: border-color 0.3s;
->>>>>>> feature-admin
 }
 
-.contenedor3d {
-  position: absolute;
-  top: 120px;
-  left: 0;
-  width: 600px;
-  height: 600px;
-  pointer-events: none;
+.form-group input:focus {
+  outline: none;
+  border-color: #1be02b;
 }
 
-button {
+.login-btn {
   width: 100%;
-  padding: 0.8rem;
-  background-color: #1be02b;
-  font-weight: 800;
-  color: black;
+  padding: 15px;
+  background: #1be02b;
+  color: #000;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  font-weight: 900;
   font-size: 1rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 0.2s;
 }
 
-<<<<<<< HEAD
-.error {
-  background: rgba(255,0,0,0.2);
-  color: #ff6666;
-  padding: 0.5rem;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  text-align: center;
-=======
 .login-btn:hover {
   transform: translateY(-2px);
 }
@@ -145,13 +95,16 @@ button {
 .login-footer {
   position:absolute;
   top:20%;
-  right:45%;
+  right:50%;
+  margin-top: 30px;
+
+  font-size: 0.9rem;
 }
 
 .login-footer a {
   color: #1be02b;
   text-decoration: none;
-  margin-left: 20px;
+  margin-left: 30px;
   font-weight: bold;
 }
 
@@ -173,5 +126,4 @@ button {
     width: 300px;
     height: 300px;
   }
->>>>>>> feature-admin
 }
