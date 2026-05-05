@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, ChangeDetectorRef, NgZone } from '@ang
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../app/services/auth';
+import { AuthService } from 'src/app/services/auth';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -23,14 +23,14 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkUserStatus();
-    this.lastUserCheck = localStorage.getItem('user') || '';
+    this.lastUserCheck = localStorage.getItem('access_token') || '';
     this.updateCartCount();
 
     this.ngZone.runOutsideAngular(() => {
       setInterval(() => {
-        const currentUser = localStorage.getItem('user') || '';
-        if (currentUser !== this.lastUserCheck) {
-          this.lastUserCheck = currentUser;
+        const currentToken = localStorage.getItem('access_token') || '';
+        if (currentToken !== this.lastUserCheck) {
+          this.lastUserCheck = currentToken;
           this.ngZone.run(() => {
             this.checkUserStatus();
             this.updateCartCount();
@@ -42,12 +42,27 @@ export class NavbarComponent implements OnInit {
   }
 
   checkUserStatus(): void {
-    const user = localStorage.getItem('user');
-    if (user) {
-      const userData = JSON.parse(user);
-      this.isLoggedIn = true;
-      this.isAdmin = userData.role === 'admin';
-      this.userName = userData.name || (this.isAdmin ? 'Admin' : 'Usuario');
+    const token = this.AuthService.getToken();
+    if (token) {
+      const user = this.AuthService.getUser();
+      if (user) {
+        this.isLoggedIn = true;
+        this.isAdmin = user.role === 'admin';
+        this.userName = user.full_name || (this.isAdmin ? 'Admin' : 'Usuario');
+      } else {
+        // If we don't have user cached, fetch from profile
+        this.AuthService.getProfile().subscribe({
+          next: (profile) => {
+            this.isLoggedIn = true;
+            this.isAdmin = profile.role === 'admin';
+            this.userName = profile.full_name || (this.isAdmin ? 'Admin' : 'Usuario');
+          },
+          error: () => {
+            // If we can't get profile, clear token and redirect to login
+            this.AuthService.logout();
+          }
+        });
+      }
     } else {
       this.isLoggedIn = false;
       this.isAdmin = false;
@@ -62,10 +77,9 @@ export class NavbarComponent implements OnInit {
   }
 
   getUserEmail(): string {
-    const user = localStorage.getItem('user');
+    const user = this.AuthService.getUser();
     if (user) {
-      const userData = JSON.parse(user);
-      return userData.email || 'usuario@email.com';
+      return user.email || 'usuario@email.com';
     }
     return '';
   }
@@ -89,8 +103,6 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('user');
-    localStorage.removeItem('cart');
     this.AuthService.logout();
     this.isLoggedIn = false;
     this.isAdmin = false;

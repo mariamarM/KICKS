@@ -16,7 +16,6 @@ import { AuthService } from './services/auth';
   imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, ToastComponent],
 
 
-
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

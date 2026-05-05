@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProductsService } from '../../services/products';
-import { ToastService } from '../../services/toast.service';
+import { ProductsService } from 'src/app/services/products';
+import { ToastService } from 'src/app/services/toast.service';
 
 interface Product {
   id: string;

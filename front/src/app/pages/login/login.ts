@@ -6,9 +6,8 @@ import { Router, RouterModule } from '@angular/router';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-
-import { AuthService } from '../../services/auth';
-import { ToastService } from '../../services/toast.service';
+import { AuthService } from 'src/app/services/auth';
+import { ToastService } from 'src/app/services/toast.service';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 @Component({
   selector: 'app-login',
@@ -25,7 +24,7 @@ export class Login implements AfterViewInit {
 
   @ViewChild('canvasContainer', { static: true }) container!: ElementRef;
 
-  constructor(private router: Router, private toastService: ToastService) { }
+  constructor(private router: Router, private toastService: ToastService, private authService: AuthService) { }
 
   ngAfterViewInit(): void {
     this.initThree();
@@ -36,34 +35,17 @@ export class Login implements AfterViewInit {
   }
 
   onLogin(): void {
-    // Credenciales hardcodeadas para testing
-    if (this.email === 'user@test.com' && this.password === '123456') {
-      const user = {
-        id: 1,
-        name: 'Usuario Normal',
-        email: this.email,
-        role: 'user'
-      };
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('access_token', 'dummy-token-' + Date.now());
-      this.toastService.show('Inicio de sesión exitoso');
-      this.router.navigate(['/']);
-    }
-    else if (this.email === 'admin@test.com' && this.password === 'admin123') {
-      const user = {
-        id: 2,
-        name: 'Administrador',
-        email: this.email,
-        role: 'admin'
-      };
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('access_token', 'dummy-admin-token-' + Date.now());
-      this.toastService.show('Inicio de sesión exitoso');
-      this.router.navigate(['/']);
-    }
-    else {
-      this.errorMessage = 'Email o contraseña incorrectos';
-    }
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        // Token already stored in authService.login via localStorage
+        this.toastService.show('Inicio de sesión exitoso');
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Login error', err);
+        this.errorMessage = err.error?.message || 'Email o contraseña incorrectos';
+      }
+    });
   }
 
   initThree(): void {
