@@ -35,8 +35,8 @@ export class Products implements OnInit {
   }
 
   loadCategories() {
-    this.productsService.getCategories().subscribe(res => {
-      this.categories = res.data;
+    this.productsService.getCategories().subscribe((res: any) => {
+      this.categories = Array.isArray(res) ? res : (res.data || []);
     });
   }
 

@@ -17,7 +17,10 @@
   </div>
   <div class="active-product-detail" *ngIf="activeProduct">
     <div class="detail-content">
-      <span class="brand-badge">{{ activeProduct.brand }}</span>
+      <div class="badges-container" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <span class="brand-badge" style="margin-bottom: 0;">{{ activeProduct.brand }}</span>
+        <span class="category-badge" *ngIf="activeProduct.categories?.name">{{ activeProduct.categories.name }}</span>
+      </div>
       <h1 class="product-name">{{ activeProduct.name }}</h1>
       <p class="product-price">{{ activeProduct.price }}€</p>
       <button [routerLink]="['/products', activeProduct.slug]" class="view-detail-btn">VER DETALLES</button>
