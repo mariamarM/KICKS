@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart';
 import { ToastService } from '../../services/toast.service';
 import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-orders',
@@ -15,7 +17,12 @@ export class Orders implements OnInit {
   items: any[] = [];
   total: number = 0;
 
-  constructor(private cartService: CartService, private toastService: ToastService) {}
+  constructor(
+    private cartService: CartService, 
+    private toastService: ToastService,
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.cartService.cart$.subscribe(items => {
@@ -33,7 +40,39 @@ export class Orders implements OnInit {
   }
 
   checkout() {
-    this.toastService.show('¡Pedido realizado con éxito! Gracias por tu compra.');
-    this.cartService.clearCart();
+    const user = this.authService.getUser();
+    if (!user) {
+      this.toastService.show('Debes estar registrado para realizar un pedido');
+      return;
+    }
+
+    const token = this.authService.getToken();
+    if (!token) {
+      this.toastService.show('Sesión expirada. Por favor, inicia sesión nuevamente.');
+      return;
+    }
+
+    const orderData = {
+      items: this.items.map(item => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        size: item.size || null
+      })),
+      shipping_address: '', // TODO: Implement shipping address collection
+      notes: '' // TODO: Implement notes collection
+    };
+
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.http.post('http://localhost:3000/api/orders', orderData, { headers }).subscribe({
+      next: (response: any) => {
+        this.toastService.show('¡Pedido realizado con éxito! Gracias por tu compra.');
+        this.cartService.clearCart();
+      },
+      error: (error) => {
+        console.error('Error creating order:', error);
+        this.toastService.show('Error al realizar el pedido. Por favor, inténtalo de nuevo.');
+      }
+    });
   }
 }
