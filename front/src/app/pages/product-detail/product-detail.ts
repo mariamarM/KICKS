@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ProductsService } from '../../services/products';
-import { AuthService } from '../../services/auth';
-import { CartService } from '../../services/cart';
-import { ToastService } from '../../services/toast.service';
+import { ProductsService } from 'src/app/services/products';
+import { AuthService } from 'src/app/services/auth';
+import { CartService } from 'src/app/services/cart';
+import { ToastService } from 'src/app/services/toast.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

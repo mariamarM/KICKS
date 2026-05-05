@@ -1,20 +1,79 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+
+export interface LoginResponse {
+  access_token: string;
+  refresh_token: string;
+  user: {
+    id: string;
+    email: string;
+    full_name: string;
+    role: string;
+  };
+}
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  full_name: string;
+  role: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = 'http://localhost:3000/auth'; // Adjust if needed
+  private userProfile: UserProfile | null = null;
 
-  private baseUrl = 'http://localhost:3000/api/auth';
+  constructor(private http: HttpClient, private router: Router) {}
 
-  constructor(private router: Router, private http: HttpClient) { }
+  login(email: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap(response => {
+        if (response.access_token) {
+          localStorage.setItem('access_token', response.access_token);
+          // Store user profile from login response
+          this.userProfile = response.user;
+        }
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
 
-  getUser(): any {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+  register(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, data).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getProfile(): Observable<UserProfile> {
+    const token = this.getToken();
+    if (!token) {
+      return throwError(() => new Error('No token available'));
+    }
+    return this.http.get<UserProfile>(`${this.apiUrl}/profile`).pipe(
+      tap(profile => {
+        // Store the profile for future use
+        this.userProfile = profile;
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  logout(): void {
+    localStorage.removeItem('access_token');
+    this.userProfile = null;
+    this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
@@ -22,47 +81,10 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('access_token');
+    return !!this.getToken();
   }
 
-  isAdmin(): boolean {
-    const user = this.getUser();
-    return user?.role === 'admin';
-  }
-
-  login(credentials: any) {
-    return this.http.post<any>(`${this.baseUrl}/login`, credentials).pipe(
-      tap(res => {
-        const token = res.access_token || res.token;
-        const user = res.user || res;
-        if (token) {
-          localStorage.setItem('access_token', token);
-        }
-        if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-        }
-      })
-    );
-  }
-
-  register(userData: any) {
-    return this.http.post<any>(`${this.baseUrl}/register`, userData);
-  }
-
-  logout(): void {
-    localStorage.removeItem('user');
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('cart');
-    this.router.navigate(['/login']);
-  }
-
-  getEmail(): string {
-    const user = this.getUser();
-    return user?.email || '';
-  }
-
-  getName(): string {
-    const user = this.getUser();
-    return user?.full_name || user?.name || (this.isAdmin() ? 'Admin' : 'Usuario');
+  getUser(): UserProfile | null {
+    return this.userProfile;
   }
 }

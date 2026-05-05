@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
-import { ProductsService } from '../../services/products';
+import { ProductsService } from 'src/app/services/products';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
