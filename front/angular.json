@@ -65,7 +65,8 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
-        }
+        },
+        "outputPath": "dist/front"
       }
     }
   }
