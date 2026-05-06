@@ -26,18 +26,25 @@ export interface UserProfile {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/auth'; // Adjust if needed
+  private apiUrl = 'http://localhost:3000/api/auth';
   private userProfile: UserProfile | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    // Restore user profile from localStorage on service init (survives page refresh)
+    const stored = localStorage.getItem('user_profile');
+    if (stored) {
+      try { this.userProfile = JSON.parse(stored); } catch { this.userProfile = null; }
+    }
+  }
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(response => {
         if (response.access_token) {
           localStorage.setItem('access_token', response.access_token);
-          // Store user profile from login response
+          // Persist user profile (including role) across page reloads
           this.userProfile = response.user;
+          localStorage.setItem('user_profile', JSON.stringify(response.user));
         }
       }),
       catchError(error => {
@@ -61,8 +68,8 @@ export class AuthService {
     }
     return this.http.get<UserProfile>(`${this.apiUrl}/profile`).pipe(
       tap(profile => {
-        // Store the profile for future use
         this.userProfile = profile;
+        localStorage.setItem('user_profile', JSON.stringify(profile));
       }),
       catchError(error => {
         return throwError(() => error);
@@ -72,6 +79,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user_profile');
     this.userProfile = null;
     this.router.navigate(['/login']);
   }
@@ -82,6 +90,10 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  isAdmin(): boolean {
+    return this.userProfile?.role === 'admin';
   }
 
   getUser(): UserProfile | null {
