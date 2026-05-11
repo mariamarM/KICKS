@@ -48,7 +48,7 @@
         <div class="order-list-mini" *ngIf="getOrdersByStatus('pending').length > 0; else noPending">
           <div class="order-card-mini" *ngFor="let order of getOrdersByStatus('pending')">
             <div class="order-row">
-              <span class="order-num">#{{ order.order_number }}</span>
+              <span class="order-num">#{{ order.id.slice(0, 8) }}</span>
               <span class="order-price">{{ order.total_amount }}€</span>
             </div>
             <div class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
@@ -63,7 +63,7 @@
         <div class="order-list-mini" *ngIf="getOrdersByStatus('confirmed').length > 0; else noConfirmed">
           <div class="order-card-mini" *ngFor="let order of getOrdersByStatus('confirmed')">
             <div class="order-row">
-              <span class="order-num">#{{ order.order_number }}</span>
+              <span class="order-num">#{{ order.id.slice(0, 8) }}</span>
               <span class="order-price">{{ order.total_amount }}€</span>
             </div>
             <div class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
@@ -78,7 +78,7 @@
         <div class="order-list-mini" *ngIf="getOrdersByStatus('shipped').length > 0; else noShipped">
           <div class="order-card-mini" *ngFor="let order of getOrdersByStatus('shipped')">
             <div class="order-row">
-              <span class="order-num">#{{ order.order_number }}</span>
+              <span class="order-num">#{{ order.id.slice(0, 8) }}</span>
               <span class="order-price">{{ order.total_amount }}€</span>
               <span class="status-tag shipped">En Camino</span>
             </div>

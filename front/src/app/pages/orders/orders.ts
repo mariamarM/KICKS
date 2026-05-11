@@ -45,7 +45,8 @@ export class Orders implements OnInit {
     this.loadingOrders = true;
     this.ordersService.getUserOrders().subscribe({
       next: (res) => {
-        this.myOrders = res;
+        console.log('MIS PEDIDOS RECIBIDOS:', res); // Log de diagnóstico
+        this.myOrders = res || [];
         this.loadingOrders = false;
       },
       error: (err) => {

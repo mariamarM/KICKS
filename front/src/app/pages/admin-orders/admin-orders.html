@@ -1,17 +1,24 @@
 <div class="admin-container">
   <h1 class="admin-title">Gestión de Pedidos</h1>
+  <div class="filter-bar">
+    <button (click)="setFilter('all')" [class.active]="filterStatus === 'all'">Todos</button>
+    <button (click)="setFilter('pending')" [class.active]="filterStatus === 'pending'">Pendientes</button>
+    <button (click)="setFilter('confirmed')" [class.active]="filterStatus === 'confirmed'">Confirmados</button>
+    <button (click)="setFilter('shipped')" [class.active]="filterStatus === 'shipped'">Enviados</button>
+    <button (click)="setFilter('delivered')" [class.active]="filterStatus === 'delivered'">Entregados</button>
+  </div>
 
   <div class="orders-list" *ngIf="!loading">
-    <div class="order-card" *ngFor="let order of orders">
+    <div class="order-card" *ngFor="let order of getFilteredOrders()">
       <div class="order-header">
-        <div class="order-id">Pedido #{{ order.order_number }}</div>
+        <div class="order-id">Pedido #{{ order.id.slice(0, 8) }}</div>
         <div class="order-date">{{ formatDate(order.created_at) }}</div>
       </div>
 
       <div class="order-body">
         <div class="order-customer">
-          <p class="customer-name">{{ order.customer_name }}</p>
-          <p class="customer-email">{{ order.customer_email }}</p>
+          <!-- Información de usuario simplificada -->
+          <p class="customer-info">ID Usuario: {{ order.user_id.slice(0, 8) }}</p>
         </div>
 
         <div class="order-items">

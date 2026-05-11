@@ -29,6 +29,7 @@ const STATUS_LABELS: Record<string, string> = {
 export class AdminOrders implements OnInit {
   orders: Order[] = [];
   loading = false;
+  filterStatus = 'all'; // Nuevo: estado del filtro
 
   constructor(
     private ordersService: OrdersService,
@@ -44,6 +45,7 @@ export class AdminOrders implements OnInit {
     this.ordersService.getAllOrders()
       .subscribe({
         next: (res) => {
+          console.log('PEDIDOS RECIBIDOS POR ADMIN:', res); // Log para depurar
           this.orders = res || [];
           this.loading = false;
         },
@@ -55,6 +57,15 @@ export class AdminOrders implements OnInit {
       });
   }
 
+  setFilter(status: string): void {
+    this.filterStatus = status;
+  }
+
+  getFilteredOrders(): Order[] {
+    if (this.filterStatus === 'all') return this.orders;
+    return this.orders.filter(o => o.status === this.filterStatus);
+  }
+
   updateStatus(orderId: string, newStatus: string): void {
     this.ordersService.updateOrderStatus(orderId, newStatus)
       .subscribe({
@@ -62,7 +73,7 @@ export class AdminOrders implements OnInit {
           const order = this.orders.find(o => o.id === orderId);
           if (order) {
             order.status = updatedOrder.status;
-            this.toastService.show(`Pedido #${order.order_number.slice(-5)} actualizado a ${this.getStatusLabel(newStatus)}`);
+            this.toastService.show(`Pedido #${order.id.slice(0, 8)} actualizado a ${this.getStatusLabel(newStatus)}`);
           }
         },
         error: (err) => {

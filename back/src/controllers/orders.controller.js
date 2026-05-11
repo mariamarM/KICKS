@@ -21,17 +21,17 @@ export const createOrder = async (req, res) => {
     let calculated_total = 0
     const orderItemsToInsert = items.map(item => {
       const product = dbProducts.find(p => p.id === (item.product_id || item.id))
-      const price = product ? product.price : 0
+      const price = product ? Number(product.price) : 0
       calculated_total += price * (item.quantity || 1)
       
       return {
         product_id: product.id,
-        quantity: item.quantity || 1
-        // Eliminamos subtotal porque no existe en tu BD
+        quantity: item.quantity || 1,
+        unit_price: price // Nombre confirmado por el error de BD
       }
     })
 
-    // 3. Crear el pedido con el total real
+    // 3. Crear el pedido
     const { data: order, error: oErr } = await supabase
       .from('orders')
       .insert({
@@ -48,7 +48,7 @@ export const createOrder = async (req, res) => {
       return res.status(500).json({ error: oErr.message })
     }
 
-    // 4. Insertar los items vinculados (SIN columnas raras)
+    // 4. Insertar los items con 'unit_price' (YA NO SERÁ NULL)
     const finalItems = orderItemsToInsert.map(item => ({
       ...item,
       order_id: order.id
@@ -66,6 +66,7 @@ export const createOrder = async (req, res) => {
       order_id: order.id,
       total: calculated_total 
     })
+
 
 
   } catch (err) {
@@ -97,19 +98,30 @@ export const getUserOrders = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
+    // DIAGNÓSTICO: Ver cuántas filas hay realmente en la tabla
+    const { count, error: countErr } = await supabase
+      .from('orders')
+      .select('*', { count: 'exact', head: true })
+    
+    console.log('--- DIAGNÓSTICO ADMIN ---')
+    console.log('Total de pedidos en la tabla:', count)
+    if (countErr) console.error('Error al contar:', countErr)
+
+    // Consulta ultra-simple para saltar cualquier error de join
     const { data, error } = await supabase
       .from('orders')
-      .select(`
-        id, total_amount, status, created_at, user_id,
-        order_items (
-          id, quantity,
-          products ( name, image_url )
-        )
-      `)
+      .select('*')
       .order('created_at', { ascending: false })
-    if (error) return res.status(500).json({ error: error.message })
+
+    if (error) {
+      console.error('Error en consulta simple:', error)
+      return res.status(500).json({ error: error.message })
+    }
+
+    console.log('Pedidos encontrados (sin joins):', data?.length)
     res.json(data)
   } catch (err) {
+    console.error('Error fatal en getAllOrders:', err)
     res.status(500).json({ error: err.message })
   }
 }
