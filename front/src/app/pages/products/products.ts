@@ -1,12 +1,12 @@
 import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
-import { ProductsService } from 'src/app/services/products';
+import { ProductsService } from '../../services/products';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 @Component({
   standalone: true,
   selector: 'app-products',
-  imports: [CommonModule, RouterModule, FormsModule], // 👈 Added FormsModule
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './products.html',
   styleUrl: './products.css'
 })
@@ -35,8 +35,8 @@ export class Products implements OnInit {
   }
 
   loadCategories() {
-    this.productsService.getCategories().subscribe((res: any) => {
-      this.categories = Array.isArray(res) ? res : (res.data || []);
+    this.productsService.getCategories().subscribe(res => {
+      this.categories = res.data;
     });
   }
 
@@ -49,7 +49,7 @@ export class Products implements OnInit {
       next: (res: any) => {
         console.log('Products loaded from API:', res);
         if (res.data) {
-          this.products = res.data.length > 0 ? res.data : this.products; // Fallback if empty but API works
+          this.products = res.data.length > 0 ? res.data : this.products;
           if (res.data.length > 0) {
             this.angleStep = 360 / Math.max(this.products.length, 12);
             this.activeIndex = 0; // Reset to first item
