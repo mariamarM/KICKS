@@ -1,33 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-
-interface OrderItem {
-  id: string;
-  quantity: number;
-  unit_price: number;
-  size?: string;
-  products: {
-    name: string;
-    image_url?: string;
-    brand?: string;
-  };
-}
-
-interface Order {
-  id: string;
-  user_id: string;
-  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
-  total_amount: number;
-  shipping_address?: string;
-  notes?: string;
-  created_at: string;
-  order_items: OrderItem[];
-  users?: {
-    email: string;
-    full_name?: string;
-  };
-}
+import { OrdersService, Order } from 'src/app/services/orders.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 const STATUS_COLORS: Record<string, string> = {
   pending: '#ffc107',
@@ -48,7 +22,7 @@ const STATUS_LABELS: Record<string, string> = {
 @Component({
   selector: 'app-admin-orders',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './admin-orders.html',
   styleUrls: ['./admin-orders.css']
 })
@@ -56,7 +30,10 @@ export class AdminOrders implements OnInit {
   orders: Order[] = [];
   loading = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private ordersService: OrdersService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadOrders();
@@ -64,7 +41,7 @@ export class AdminOrders implements OnInit {
 
   loadOrders(): void {
     this.loading = true;
-    this.http.get<any[]>('http://localhost:3000/api/orders')
+    this.ordersService.getAllOrders()
       .subscribe({
         next: (res) => {
           this.orders = res || [];
@@ -73,21 +50,24 @@ export class AdminOrders implements OnInit {
         error: (err) => {
           console.error('Error loading orders:', err);
           this.loading = false;
+          this.toastService.show('Error al cargar los pedidos');
         }
       });
   }
 
   updateStatus(orderId: string, newStatus: string): void {
-    this.http.patch(`http://localhost:3000/api/orders/${orderId}/status`, { status: newStatus })
+    this.ordersService.updateOrderStatus(orderId, newStatus)
       .subscribe({
-        next: () => {
+        next: (updatedOrder) => {
           const order = this.orders.find(o => o.id === orderId);
           if (order) {
-            order.status = newStatus as Order['status'];
+            order.status = updatedOrder.status;
+            this.toastService.show(`Pedido #${order.order_number.slice(-5)} actualizado a ${this.getStatusLabel(newStatus)}`);
           }
         },
         error: (err) => {
           console.error('Error updating status:', err);
+          this.toastService.show('Error al actualizar el estado del pedido');
         }
       });
   }
@@ -111,3 +91,4 @@ export class AdminOrders implements OnInit {
     });
   }
 }
+

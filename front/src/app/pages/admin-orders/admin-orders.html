@@ -4,14 +4,14 @@
   <div class="orders-list" *ngIf="!loading">
     <div class="order-card" *ngFor="let order of orders">
       <div class="order-header">
-        <div class="order-id">Pedido #{{ order.id.slice(0, 8) }}</div>
+        <div class="order-id">Pedido #{{ order.order_number }}</div>
         <div class="order-date">{{ formatDate(order.created_at) }}</div>
       </div>
 
       <div class="order-body">
         <div class="order-customer">
-          <p class="customer-name">{{ order.users?.full_name || 'Cliente' }}</p>
-          <p class="customer-email">{{ order.user_id.slice(0, 8) }}...</p>
+          <p class="customer-name">{{ order.customer_name }}</p>
+          <p class="customer-email">{{ order.customer_email }}</p>
         </div>
 
         <div class="order-items">
@@ -25,6 +25,7 @@
         <div class="order-total">
           Total: <strong>{{ order.total_amount }}€</strong>
         </div>
+
 
         <div class="order-address" *ngIf="order.shipping_address">
           {{ order.shipping_address }}

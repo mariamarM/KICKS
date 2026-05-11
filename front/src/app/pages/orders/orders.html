@@ -36,4 +36,59 @@
       <button (click)="checkout()" class="checkout-btn">FINALIZAR COMPRA</button>
     </div>
   </div>
+
+  <!-- SECCIÓN DE HISTORIAL DE PEDIDOS (MIS PEDIDOS) -->
+  <div class="my-orders-history">
+    <h2 class="history-title">MIS PEDIDOS</h2>
+    
+    <div class="status-grid">
+      <!-- BLOQUE 1: PEDIDOS EN ESPERA -->
+      <div class="status-block">
+        <h3 class="block-header">PEDIDOS EN ESPERA</h3>
+        <div class="order-list-mini" *ngIf="getOrdersByStatus('pending').length > 0; else noPending">
+          <div class="order-card-mini" *ngFor="let order of getOrdersByStatus('pending')">
+            <div class="order-row">
+              <span class="order-num">#{{ order.order_number }}</span>
+              <span class="order-price">{{ order.total_amount }}€</span>
+            </div>
+            <div class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
+          </div>
+        </div>
+        <ng-template #noPending><p class="no-orders">No tienes pedidos en espera.</p></ng-template>
+      </div>
+
+      <!-- BLOQUE 2: PEDIDOS CONFIRMADOS -->
+      <div class="status-block">
+        <h3 class="block-header">PEDIDOS CONFIRMADOS</h3>
+        <div class="order-list-mini" *ngIf="getOrdersByStatus('confirmed').length > 0; else noConfirmed">
+          <div class="order-card-mini" *ngFor="let order of getOrdersByStatus('confirmed')">
+            <div class="order-row">
+              <span class="order-num">#{{ order.order_number }}</span>
+              <span class="order-price">{{ order.total_amount }}€</span>
+            </div>
+            <div class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
+          </div>
+        </div>
+        <ng-template #noConfirmed><p class="no-orders">No hay pedidos confirmados.</p></ng-template>
+      </div>
+
+      <!-- BLOQUE 3: PEDIDOS ENVIADOS -->
+      <div class="status-block">
+        <h3 class="block-header">PEDIDOS ENVIADOS</h3>
+        <div class="order-list-mini" *ngIf="getOrdersByStatus('shipped').length > 0; else noShipped">
+          <div class="order-card-mini" *ngFor="let order of getOrdersByStatus('shipped')">
+            <div class="order-row">
+              <span class="order-num">#{{ order.order_number }}</span>
+              <span class="order-price">{{ order.total_amount }}€</span>
+              <span class="status-tag shipped">En Camino</span>
+            </div>
+            <div class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
+          </div>
+        </div>
+        <ng-template #noShipped><p class="no-orders">No hay pedidos enviados.</p></ng-template>
+      </div>
+    </div>
+  </div>
+
 </div>
+

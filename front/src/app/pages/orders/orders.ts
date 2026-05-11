@@ -5,6 +5,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth';
+import { OrdersService, Order } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-orders',
@@ -16,12 +17,17 @@ import { AuthService } from 'src/app/services/auth';
 export class Orders implements OnInit {
   items: any[] = [];
   total: number = 0;
+  
+  // Historial de pedidos
+  myOrders: Order[] = [];
+  loadingOrders = false;
 
   constructor(
     private cartService: CartService, 
     private toastService: ToastService,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private ordersService: OrdersService
   ) {}
 
   ngOnInit() {
@@ -29,6 +35,39 @@ export class Orders implements OnInit {
       this.items = items;
       this.calculateTotal();
     });
+
+    if (this.authService.isLoggedIn()) {
+      this.loadMyOrders();
+    }
+  }
+
+  loadMyOrders() {
+    this.loadingOrders = true;
+    this.ordersService.getUserOrders().subscribe({
+      next: (res) => {
+        this.myOrders = res;
+        this.loadingOrders = false;
+      },
+      error: (err) => {
+        console.error('Error loading my orders:', err);
+        this.loadingOrders = false;
+      }
+    });
+  }
+
+  getOrdersByStatus(status: string): Order[] {
+    return this.myOrders.filter(o => o.status === status);
+  }
+
+  getStatusLabel(status: string): string {
+    const labels: Record<string, string> = {
+      pending: 'Espera/Pendiente',
+      confirmed: 'Confirmado',
+      shipped: 'Enviado',
+      delivered: 'Entregado',
+      cancelled: 'Cancelado'
+    };
+    return labels[status] || status;
   }
 
   calculateTotal() {
@@ -50,21 +89,25 @@ export class Orders implements OnInit {
       items: this.items.map(item => ({
         product_id: item.id,
         quantity: item.quantity,
-        size: item.size || null
+        size: item.selectedSize || null
       })),
-      shipping_address: '', // TODO: Implement shipping address collection
-      notes: '' // TODO: Implement notes collection
+      shipping_address: 'Finalización de compra manual',
+      notes: ''
     };
 
-    this.http.post('/api/orders', orderData).subscribe({
+    this.ordersService.createOrder(orderData).subscribe({
       next: (response: any) => {
         this.toastService.show('¡Pedido realizado con éxito! Gracias por tu compra.');
         this.cartService.clearCart();
+        this.loadMyOrders(); // Recargamos para ver el nuevo pedido
       },
       error: (error) => {
         console.error('Error creating order:', error);
-        this.toastService.show('Error al realizar el pedido. Por favor, inténtalo de nuevo.');
+        const errorMsg = error.error?.message || 'Error al realizar el pedido. Por favor, inténtalo de nuevo.';
+        this.toastService.show(errorMsg);
       }
     });
   }
 }
+
+

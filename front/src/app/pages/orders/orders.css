@@ -127,3 +127,114 @@
   margin-top: 20px;
   cursor: pointer;
 }
+
+.checkout-btn:hover {
+  background: #00cc00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+}
+
+/* SECCIÓN MIS PEDIDOS */
+.my-orders-history {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(0, 255, 13, 0.1);
+}
+
+.history-title {
+  color: #00ff0d;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(0, 255, 13, 0.3);
+  font-family: 'Orbitron', sans-serif;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.status-block {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(0, 255, 13, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.status-block:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 255, 13, 0.5);
+}
+
+.block-header {
+  color: #00ff0d;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 255, 13, 0.2);
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.order-list-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-card-mini {
+  background: rgba(20, 20, 20, 0.5);
+  border-left: 3px solid #00ff0d;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.order-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.order-num {
+  font-weight: bold;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.order-price {
+  color: #00ff0d;
+  font-weight: bold;
+}
+
+.order-date {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.no-orders {
+  color: #555;
+  text-align: center;
+  font-style: italic;
+  padding: 20px 0;
+  font-size: 0.9rem;
+}
+
+.status-tag {
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.status-tag.shipped {
+  background: rgba(0, 150, 255, 0.2);
+  color: #0096ff;
+  border: 1px solid #0096ff;
+}
+
+

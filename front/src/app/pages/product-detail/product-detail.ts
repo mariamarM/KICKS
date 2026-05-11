@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductsService } from 'src/app/services/products';
 import { AuthService } from 'src/app/services/auth';
 import { CartService } from 'src/app/services/cart';
+import { OrdersService } from 'src/app/services/orders.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { CommonModule } from '@angular/common';
 
@@ -25,6 +26,7 @@ export class ProductDetail implements OnInit {
     private productsService: ProductsService,
     public authService: AuthService,
     private cartService: CartService,
+    private ordersService: OrdersService,
     private toastService: ToastService
   ) {}
 
@@ -54,12 +56,22 @@ export class ProductDetail implements OnInit {
       return;
     }
 
+    if (!this.authService.isLoggedIn()) {
+      this.toastService.show('Debes iniciar sesión para añadir productos y realizar pedidos');
+      return;
+    }
+
+    // 1. Añadimos al carrito local (UI)
     this.cartService.addToCart({
       ...this.product,
       selectedSize: this.selectedSize
     });
-    this.toastService.show(`${this.product.name} (Talla ${this.selectedSize}) añadido al carrito`);
+
+    this.toastService.show(`${this.product.name} añadido al carrito`);
   }
+
+
+
 
   selectSize(size: string): void {
     this.selectedSize = size;
