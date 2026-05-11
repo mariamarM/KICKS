@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 import * as THREE from 'three';
@@ -9,22 +9,32 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { AuthService } from 'src/app/services/auth';
 import { ToastService } from 'src/app/services/toast.service';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class Login implements AfterViewInit {
 
-  email: string = '';
-  password: string = '';
+  loginForm: FormGroup;
   errorMessage: string = '';
 
   @ViewChild('canvasContainer', { static: true }) container!: ElementRef;
 
-  constructor(private router: Router, private toastService: ToastService, private authService: AuthService) { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router, 
+    private toastService: ToastService, 
+    private authService: AuthService
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
+  }
 
   ngAfterViewInit(): void {
     this.initThree();
@@ -35,9 +45,14 @@ export class Login implements AfterViewInit {
   }
 
   onLogin(): void {
-    this.authService.login(this.email, this.password).subscribe({
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Por favor, introduce un email y contraseña válidos';
+      return;
+    }
+
+    const { email, password } = this.loginForm.value;
+    this.authService.login(email, password).subscribe({
       next: (response) => {
-        // Token already stored in authService.login via localStorage
         this.toastService.show('Inicio de sesión exitoso');
         this.router.navigate(['/']);
       },

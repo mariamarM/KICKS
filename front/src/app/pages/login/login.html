@@ -11,13 +11,12 @@
       {{ errorMessage }}
     </div>
 
-    <form (ngSubmit)="onLogin()">
-      <input type="email" [value]="email" (input)="email = $any($event.target).value" placeholder="Email" required>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <input type="email" formControlName="email" placeholder="Email">
 
-      <input type="password" [value]="password" (input)="password = $any($event.target).value" placeholder="Password"
-        required>
+      <input type="password" formControlName="password" placeholder="Password">
 
-      <button type="submit">Iniciar Sesión</button>
+      <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
     </form>
     <!-- <div class="demo-info">
       <p><strong>Cuentas de prueba:</strong></p>
