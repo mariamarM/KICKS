@@ -1,6 +1,6 @@
 <div class="orders-container">
   <div class="orders-header">
-    <h1>MI PEDIDO</h1>
+    <h1>MI CARRITO</h1>
     <p>Revisa tus zapatillas antes de finalizar la compra</p>
   </div>
 
@@ -40,7 +40,7 @@
   <!-- SECCIÓN DE HISTORIAL DE PEDIDOS (MIS PEDIDOS) -->
   <div class="my-orders-history">
     <h2 class="history-title">MIS PEDIDOS</h2>
-    
+
     <div class="status-grid">
       <!-- BLOQUE 1: PEDIDOS EN ESPERA -->
       <div class="status-block">
@@ -54,7 +54,9 @@
             <div class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
           </div>
         </div>
-        <ng-template #noPending><p class="no-orders">No tienes pedidos en espera.</p></ng-template>
+        <ng-template #noPending>
+          <p class="no-orders">No tienes pedidos en espera.</p>
+        </ng-template>
       </div>
 
       <!-- BLOQUE 2: PEDIDOS CONFIRMADOS -->
@@ -69,7 +71,9 @@
             <div class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
           </div>
         </div>
-        <ng-template #noConfirmed><p class="no-orders">No hay pedidos confirmados.</p></ng-template>
+        <ng-template #noConfirmed>
+          <p class="no-orders">No hay pedidos confirmados.</p>
+        </ng-template>
       </div>
 
       <!-- BLOQUE 3: PEDIDOS ENVIADOS -->
@@ -85,10 +89,11 @@
             <div class="order-date">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
           </div>
         </div>
-        <ng-template #noShipped><p class="no-orders">No hay pedidos enviados.</p></ng-template>
+        <ng-template #noShipped>
+          <p class="no-orders">No hay pedidos enviados.</p>
+        </ng-template>
       </div>
     </div>
   </div>
 
 </div>
-

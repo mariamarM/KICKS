@@ -1,4 +1,5 @@
 import { supabase } from '../config/supabase.js'
+import { createClient } from '@supabase/supabase-js'
 
 export const createOrder = async (req, res) => {
   const { items, shipping_address } = req.body
@@ -105,7 +106,6 @@ export const getUserOrders = async (req, res) => {
   }
 }
 
-import { createClient } from '@supabase/supabase-js'
 
 export const getAllOrders = async (req, res) => {
   try {
@@ -148,25 +148,42 @@ export const updateOrderStatus = async (req, res) => {
   const { id } = req.params
   const { status } = req.body
 
+  console.log(`--- ADMIN: ACTUALIZANDO ESTADO ---`)
+  console.log(`ID: ${id}, Nuevo Estado: ${status}`)
+
   const validStatuses = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled']
   if (!validStatuses.includes(status)) {
     return res.status(400).json({ error: 'Estado no válido' })
   }
 
   try {
-    const { data, error } = await supabase
+    // Usamos un cliente con Service Role para asegurar permisos de admin
+    const supabaseMaster = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    )
+
+    const { data, error } = await supabaseMaster
       .from('orders')
       .update({ status })
       .eq('id', id)
       .select()
-      .single()
+      .maybeSingle()
 
-    if (error) throw error
-    if (!data) return res.status(404).json({ error: 'Pedido no encontrado' })
+    if (error) {
+      console.error('Error de Supabase en updateOrderStatus:', error)
+      return res.status(500).json({ error: error.message })
+    }
 
+    if (!data) {
+      console.warn(`No se encontró el pedido ${id} para actualizar (0 filas afectadas)`)
+      return res.status(404).json({ error: 'Pedido no encontrado' })
+    }
+
+    console.log('Estado actualizado con éxito:', data.status)
     res.json(data)
   } catch (err) {
-    console.error('Error en updateOrderStatus:', err)
-    res.status(500).json({ error: err.message || 'Error al actualizar el estado' })
+    console.error('Error crítico en updateOrderStatus:', err)
+    res.status(500).json({ error: 'Error interno del servidor', details: err.message })
   }
 }
