@@ -50,37 +50,42 @@
 
          <img *ngIf="selectedProduct?.image_url" [src]="selectedProduct?.image_url" class="panel-image">
 
-        <input [(ngModel)]="editForm.name" placeholder="Nombre" class="input-field">
-        <input [(ngModel)]="editForm.price" placeholder="Precio" class="input-field">
-        <input [(ngModel)]="editForm.stock" placeholder="Stock" class="input-field">
-        <input [(ngModel)]="editForm.brand" placeholder="Marca" class="input-field">
-        <input [(ngModel)]="editForm.category_id" placeholder="Categoria" class="input-field">
-        <input [(ngModel)]="editForm.sizes" placeholder="Tallas" class="input-field">
-        <textarea [(ngModel)]="editForm.description" class="input-field textarea"></textarea>
+        <form *ngIf="editForm" [formGroup]="editForm" (ngSubmit)="saveProduct()">
+          <input formControlName="name" placeholder="Nombre" class="input-field">
+          <input formControlName="price" type="number" placeholder="Precio" class="input-field">
+          <input formControlName="stock" type="number" placeholder="Stock" class="input-field">
+          <input formControlName="brand" placeholder="Marca" class="input-field">
+          <input formControlName="category_id" placeholder="Categoria" class="input-field">
+          <input formControlName="sizes" placeholder="Tallas" class="input-field">
+          <input formControlName="image_url" placeholder="Imagen URL" class="input-field">
+          <textarea formControlName="description" placeholder="Descripción" class="input-field textarea"></textarea>
 
-        <button class="save-btn" (click)="saveProduct()">Guardar</button>
-         <button class="delete-btn" (click)="confirmDelete(selectedProduct)">Eliminar</button>
+          <button type="submit" class="save-btn" [disabled]="editForm.invalid">Guardar</button>
+          <button type="button" class="delete-btn" (click)="confirmDelete(selectedProduct)">Eliminar</button>
+        </form>
 
       </div>
 
     </div>
 
-    <div class="product-panel create-panel">
+    <div class="product-panel create-panel" [class.open]="isCreating">
 
       <div class="panel-card large">
 
         <h2>Crear producto</h2>
 
-        <input [(ngModel)]="createForm.name" placeholder="Nombre" class="input-field">
-        <input [(ngModel)]="createForm.price" placeholder="Precio" class="input-field">
-        <input [(ngModel)]="createForm.stock" placeholder="Stock" class="input-field">
-        <input [(ngModel)]="createForm.brand" placeholder="Marca" class="input-field">
-        <input [(ngModel)]="createForm.category_id" placeholder="Categoria" class="input-field">
-        <input [(ngModel)]="createForm.sizes" placeholder="Tallas" class="input-field">
-        <input [(ngModel)]="createForm.image_url" placeholder="Imagen URL" class="input-field">
-        <textarea [(ngModel)]="createForm.description" class="input-field textarea"></textarea>
+        <form *ngIf="createForm" [formGroup]="createForm" (ngSubmit)="createProduct()">
+          <input formControlName="name" placeholder="Nombre" class="input-field">
+          <input formControlName="price" type="number" placeholder="Precio" class="input-field">
+          <input formControlName="stock" type="number" placeholder="Stock" class="input-field">
+          <input formControlName="brand" placeholder="Marca" class="input-field">
+          <input formControlName="category_id" placeholder="Categoria" class="input-field">
+          <input formControlName="sizes" placeholder="Tallas" class="input-field">
+          <input formControlName="image_url" placeholder="Imagen URL" class="input-field">
+          <textarea formControlName="description" placeholder="Descripción" class="input-field textarea"></textarea>
 
-        <button class="save-btn" (click)="createProduct()">Crear producto</button>
+          <button type="submit" class="save-btn" [disabled]="createForm.invalid">Crear producto</button>
+        </form>
 
       </div>
 

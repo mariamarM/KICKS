@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductsService } from 'src/app/services/products';
 import { ToastService } from 'src/app/services/toast.service';
 
@@ -33,7 +33,7 @@ interface ProductForm {
 @Component({
   selector: 'app-admin-products',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './admin-products.html',
   styleUrls: ['./admin-products.css']
 })
@@ -45,37 +45,46 @@ export class AdminProducts implements OnInit {
   expandedState: Record<string, boolean> = {};
 
   selectedProduct: Product | null = null;
-  editForm: ProductForm = {
-    name: '',
-    description: '',
-    price: '',
-    stock: '',
-    brand: '',
-    sizes: '',
-    category_id: '',
-    image_url: ''
-  };
-
-  createForm: ProductForm = {
-    name: '',
-    description: '',
-    price: '',
-    stock: '',
-    brand: '',
-    sizes: '',
-    category_id: '',
-    image_url: ''
-  };
+  editForm!: FormGroup;
+  createForm!: FormGroup;
 
   swipeState: Record<string, 'idle' | 'swiped'> = {};
 
   constructor(
     private productsService: ProductsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.initForms();
     this.loadProducts();
+  }
+
+  initForms(): void {
+    this.editForm = this.fb.group({
+      name: ['', Validators.required],
+      description: [''],
+      price: ['', [Validators.required, Validators.min(0)]],
+      stock: ['', [Validators.required, Validators.min(0)]],
+      brand: [''],
+      sizes: ['', Validators.required],
+      category_id: [''],
+      image_url: [''],
+      is_active: [true]
+    });
+
+    this.createForm = this.fb.group({
+      name: ['', Validators.required],
+      description: [''],
+      price: ['', [Validators.required, Validators.min(0)]],
+      stock: ['', [Validators.required, Validators.min(0)]],
+      brand: [''],
+      sizes: ['', Validators.required],
+      category_id: [''],
+      image_url: [''],
+      is_active: [true]
+    });
   }
 
   get filteredProducts(): Product[] {
@@ -94,16 +103,9 @@ export class AdminProducts implements OnInit {
     this.isCreating = !this.isCreating;
     this.selectedProduct = null;
 
-    this.createForm = {
-      name: '',
-      description: '',
-      price: '',
-      stock: '',
-      brand: '',
-      sizes: '',
-      category_id: '',
-      image_url: ''
-    };
+    if (this.createForm) {
+      this.createForm.reset({ is_active: true });
+    }
   }
 
   selectProduct(product: Product): void {
@@ -136,61 +138,48 @@ export class AdminProducts implements OnInit {
   openEditPanel(product: Product): void {
     this.selectedProduct = product;
 
-    this.editForm = {
-      name: product.name || '',
-      description: product.description || '',
-      price: String(product.price ?? ''),
-      stock: String(product.stock ?? ''),
-      brand: product.brand || '',
-      sizes: (product.sizes || []).join(', '),
-      category_id: product.category_id || '',
-      image_url: product.image_url || ''
-    };
+    if (this.editForm) {
+      this.editForm.patchValue({
+        name: product.name || '',
+        description: product.description || '',
+        price: product.price ?? '',
+        stock: product.stock ?? '',
+        brand: product.brand || '',
+        sizes: (product.sizes || []).join(', '),
+        category_id: product.category_id || '',
+        image_url: product.image_url || '',
+        is_active: product.is_active ?? true
+      });
+    }
   }
 
   closeEditPanel(): void {
     this.selectedProduct = null;
   }
 
-  private validateForm(form: ProductForm): boolean {
-    if (!form.name.trim()) {
-      this.toastService.show('El nombre es obligatorio');
-      return false;
-    }
-    if (!form.price || isNaN(Number(form.price)) || Number(form.price) <= 0) {
-      this.toastService.show('El precio debe ser un número positivo');
-      return false;
-    }
-    if (!form.stock || isNaN(Number(form.stock)) || Number(form.stock) < 0) {
-      this.toastService.show('El stock debe ser un número no negativo');
-      return false;
-    }
-    if (!form.sizes.trim()) {
-      this.toastService.show('Las tallas son obligatorias');
-      return false;
-    }
-    return true;
-  }
-
   saveProduct(): void {
-    if (!this.selectedProduct) return;
+    if (!this.selectedProduct || this.editForm.invalid) return;
 
-    if (!this.validateForm(this.editForm)) return;
-
+    const val = this.editForm.value;
     const formData = new FormData();
-    formData.append('name', this.editForm.name.trim());
-    formData.append('description', this.editForm.description.trim());
-    formData.append('price', String(Number(this.editForm.price)));
-    formData.append('stock', String(Number(this.editForm.stock)));
-    formData.append('brand', this.editForm.brand.trim());
-    formData.append('sizes', JSON.stringify(
-      this.editForm.sizes.split(',').map((s: string) => s.trim()).filter(Boolean)
-    ));
-    formData.append('category_id', this.editForm.category_id.trim());
-
-    if (this.editForm.image_url) {
-      formData.append('image_url', this.editForm.image_url.trim());
+    formData.append('name', val.name.trim());
+    formData.append('description', val.description?.trim() || '');
+    formData.append('price', String(Number(val.price)));
+    formData.append('stock', String(Number(val.stock)));
+    formData.append('brand', val.brand?.trim() || '');
+    
+    const sizesArr = (val.sizes || '').split(',').map((s: string) => s.trim()).filter(Boolean);
+    formData.append('sizes', JSON.stringify(sizesArr));
+    
+    if (val.category_id?.trim()) {
+      formData.append('category_id', val.category_id.trim());
     }
+
+    if (val.image_url) {
+      formData.append('image_url', val.image_url.trim());
+    }
+    
+    formData.append('is_active', String(val.is_active));
 
     this.productsService.updateProduct(this.selectedProduct.id, formData).subscribe({
       next: () => {
@@ -215,29 +204,39 @@ export class AdminProducts implements OnInit {
   }
 
   createProduct(): void {
-    if (!this.validateForm(this.createForm)) return;
+    if (this.createForm.invalid) return;
 
+    const val = this.createForm.value;
     const formData = new FormData();
-    formData.append('name', this.createForm.name.trim());
-    formData.append('description', this.createForm.description.trim());
-    formData.append('price', String(Number(this.createForm.price)));
-    formData.append('stock', String(Number(this.createForm.stock)));
-    formData.append('brand', this.createForm.brand.trim());
-    formData.append('sizes', JSON.stringify(
-      this.createForm.sizes.split(',').map(s => s.trim()).filter(Boolean)
-    ));
-    formData.append('category_id', this.createForm.category_id.trim());
-    formData.append('image_url', this.createForm.image_url.trim());
+    formData.append('name', val.name.trim());
+    formData.append('description', val.description?.trim() || '');
+    formData.append('price', String(Number(val.price)));
+    formData.append('stock', String(Number(val.stock)));
+    formData.append('brand', val.brand?.trim() || '');
+    
+    const sizesArr = (val.sizes || '').split(',').map((s: string) => s.trim()).filter(Boolean);
+    formData.append('sizes', JSON.stringify(sizesArr));
+    
+    if (val.category_id?.trim()) {
+      formData.append('category_id', val.category_id.trim());
+    }
+    
+    if (val.image_url) {
+      formData.append('image_url', val.image_url.trim());
+    }
     formData.append('is_active', 'true');
 
     this.productsService.createProduct(formData).subscribe({
       next: () => {
         this.toastService.show('Producto creado');
         this.isCreating = false;
+        this.createForm.reset({ is_active: true });
         this.loadProducts();
       },
-      error: () => {
-        this.toastService.show('Error al crear producto');
+      error: (err) => {
+        console.error('Error del servidor:', err);
+        const errorMsg = err.error?.error || err.error?.message || err.message;
+        this.toastService.show('Error: ' + errorMsg);
       }
     });
   }

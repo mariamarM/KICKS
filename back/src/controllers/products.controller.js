@@ -49,34 +49,39 @@ export const getProductBySlug = async (req, res) => {
 }
 
 export const createProduct = async (req, res) => {
-  const body = { ...req.body }
+  try {
+    const body = { ...req.body }
 
-  // Subir imagen a Cloudinary si viene
-  let image_url = null
-  if (req.file) {
-    const result = await uploadToCloudinary(req.file.buffer)
-    image_url = result.secure_url
+    // Subir imagen a Cloudinary si viene
+    let image_url = null
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.buffer)
+      image_url = result.secure_url
+    }
+
+    // Parsear sizes si viene como string JSON
+    let sizes = []
+    if (body.sizes && typeof body.sizes === 'string') {
+      sizes = JSON.parse(body.sizes)
+    }
+
+    const { data, error } = await supabase.rpc('insert_product', {
+      p_name:        body.name,
+      p_price:       Number(body.price),
+      p_category_id: body.category_id || null,
+      p_description: body.description || null,
+      p_stock:       Number(body.stock) || 0,
+      p_brand:       body.brand        || null,
+      p_sizes:       sizes,
+      p_image_url:   image_url || null
+    })
+
+    if (error) return res.status(500).json({ error: error.message })
+    res.status(201).json(data)
+  } catch (err) {
+    console.error('Unhandled error in createProduct:', err);
+    res.status(500).json({ error: err.message || 'Internal server error' });
   }
-
-  // Parsear sizes si viene como string JSON
-  let sizes = []
-  if (body.sizes && typeof body.sizes === 'string') {
-    sizes = JSON.parse(body.sizes)
-  }
-
-  const { data, error } = await supabase.rpc('insert_product', {
-    p_name:        body.name,
-    p_price:       Number(body.price),
-    p_category_id: body.category_id,
-    p_description: body.description || null,
-    p_stock:       Number(body.stock) || 0,
-    p_brand:       body.brand        || null,
-    p_sizes:       sizes,
-    p_image_url:   image_url
-  })
-
-  if (error) return res.status(500).json({ error: error.message })
-  res.status(201).json(data)
 }
 
 export const updateProduct = async (req, res) => {

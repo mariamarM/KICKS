@@ -26,8 +26,8 @@ export class Login implements AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router, 
-    private toastService: ToastService, 
+    private router: Router,
+    private toastService: ToastService,
     private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
@@ -106,7 +106,6 @@ export class Login implements AfterViewInit {
       (gltf: any) => {
         const model = gltf.scene;
 
-        // 📦 centrar modelo
         const box = new THREE.Box3().setFromObject(model);
         const size = new THREE.Vector3();
         const center = new THREE.Vector3();
@@ -118,7 +117,6 @@ export class Login implements AfterViewInit {
 
         model.scale.set(1.5, 1.5, 1.5);
 
-        // ✨ material verde metálico
         model.traverse((child: any) => {
           if (child.isMesh) {
             child.material = new THREE.MeshStandardMaterial({
