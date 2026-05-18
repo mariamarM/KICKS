@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from 'src/app/services/cart';
 import { ToastService } from 'src/app/services/toast.service';
@@ -27,13 +27,15 @@ export class Orders implements OnInit {
     private toastService: ToastService,
     private http: HttpClient,
     private authService: AuthService,
-    private ordersService: OrdersService
+    private ordersService: OrdersService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.cartService.cart$.subscribe(items => {
       this.items = items;
       this.calculateTotal();
+      this.cdr.detectChanges();
     });
 
     if (this.authService.isLoggedIn()) {
@@ -48,10 +50,12 @@ export class Orders implements OnInit {
         console.log('MIS PEDIDOS RECIBIDOS:', res); // Log de diagnóstico
         this.myOrders = res || [];
         this.loadingOrders = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error loading my orders:', err);
         this.loadingOrders = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -101,11 +105,13 @@ export class Orders implements OnInit {
         this.toastService.show('¡Pedido realizado con éxito! Gracias por tu compra.');
         this.cartService.clearCart();
         this.loadMyOrders(); // Recargamos para ver el nuevo pedido
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error creating order:', error);
         const errorMsg = error.error?.message || 'Error al realizar el pedido. Por favor, inténtalo de nuevo.';
         this.toastService.show(errorMsg);
+        this.cdr.detectChanges();
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -25,7 +25,8 @@ export class Register implements AfterViewInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private cdr: ChangeDetectorRef
   ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -89,9 +90,11 @@ export class Register implements AfterViewInit {
       next: () => {
         this.toastService.show('Registro completado con éxito. ¡Bienvenido!');
         this.router.navigate(['/login']);
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         this.errorMessage = err.error?.error || 'Error en el registro';
+        this.cdr.detectChanges();
       }
     });
   }

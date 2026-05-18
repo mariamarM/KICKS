@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrdersService, Order } from 'src/app/services/orders.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -33,7 +33,8 @@ export class AdminOrders implements OnInit {
 
   constructor(
     private ordersService: OrdersService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -48,11 +49,13 @@ export class AdminOrders implements OnInit {
           console.log('PEDIDOS RECIBIDOS POR ADMIN:', res); // Log para depurar
           this.orders = res || [];
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading orders:', err);
           this.loading = false;
           this.toastService.show('Error al cargar los pedidos');
+          this.cdr.detectChanges();
         }
       });
   }
@@ -74,11 +77,13 @@ export class AdminOrders implements OnInit {
           if (order) {
             order.status = updatedOrder.status;
             this.toastService.show(`Pedido #${order.id.slice(0, 8)} actualizado a ${this.getStatusLabel(newStatus)}`);
+            this.cdr.detectChanges();
           }
         },
         error: (err) => {
           console.error('Error updating status:', err);
           this.toastService.show('Error al actualizar el estado del pedido');
+          this.cdr.detectChanges();
         }
       });
   }

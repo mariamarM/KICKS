@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -28,7 +28,8 @@ export class Login implements AfterViewInit {
     private fb: FormBuilder,
     private router: Router,
     private toastService: ToastService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -55,10 +56,12 @@ export class Login implements AfterViewInit {
       next: (response) => {
         this.toastService.show('Inicio de sesión exitoso');
         this.router.navigate(['/']);
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Login error', err);
         this.errorMessage = err.error?.message || 'Email o contraseña incorrectos';
+        this.cdr.detectChanges();
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductsService } from 'src/app/services/products';
 import { AuthService } from 'src/app/services/auth';
@@ -27,7 +27,8 @@ export class ProductDetail implements OnInit {
     public authService: AuthService,
     private cartService: CartService,
     private ordersService: OrdersService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -41,9 +42,11 @@ export class ProductDetail implements OnInit {
               ? this.product.sizes.split(' ')
               : this.product.sizes;
           }
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading product detail:', err);
+          this.cdr.detectChanges();
         }
       });
   }
@@ -75,5 +78,6 @@ export class ProductDetail implements OnInit {
 
   selectSize(size: string): void {
     this.selectedSize = size;
+    this.cdr.detectChanges();
   }
 }

@@ -37,6 +37,7 @@ export class Products implements OnInit {
   loadCategories() {
     this.productsService.getCategories().subscribe(res => {
       this.categories = res.data;
+      this.cdr.detectChanges();
     });
   }
 
@@ -58,8 +59,12 @@ export class Products implements OnInit {
             this.updateActiveProduct();
           }
         }
+        this.cdr.detectChanges();
       },
-      error: (err) => console.error('Error loading products list:', err)
+      error: (err) => {
+        console.error('Error loading products list:', err);
+        this.cdr.detectChanges();
+      }
     });
   }
 

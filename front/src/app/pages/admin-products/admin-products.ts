@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductsService } from 'src/app/services/products';
@@ -54,8 +54,9 @@ export class AdminProducts implements OnInit {
   constructor(
     private productsService: ProductsService,
     private toastService: ToastService,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.initForms();
@@ -67,6 +68,7 @@ export class AdminProducts implements OnInit {
     this.productsService.getCategories().subscribe({
       next: (res: any) => {
         this.categories = Array.isArray(res) ? res : (res.data || []);
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Error al cargar categorías', err)
     });
@@ -137,11 +139,13 @@ export class AdminProducts implements OnInit {
       next: (res) => {
         this.products = (Array.isArray(res.data) ? res.data : (res.data ? [res.data] : [])) as any;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.toastService.show('Error al cargar productos');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -178,10 +182,10 @@ export class AdminProducts implements OnInit {
     formData.append('price', String(Number(val.price)));
     formData.append('stock', String(Number(val.stock)));
     formData.append('brand', val.brand?.trim() || '');
-    
+
     const sizesArr = (val.sizes || '').split(',').map((s: string) => s.trim()).filter(Boolean);
     formData.append('sizes', JSON.stringify(sizesArr));
-    
+
     if (val.category_id?.trim()) {
       formData.append('category_id', val.category_id.trim());
     }
@@ -189,7 +193,7 @@ export class AdminProducts implements OnInit {
     if (val.image_url) {
       formData.append('image_url', val.image_url.trim());
     }
-    
+
     formData.append('is_active', String(val.is_active));
 
     this.productsService.updateProduct(this.selectedProduct.id, formData).subscribe({
@@ -224,14 +228,14 @@ export class AdminProducts implements OnInit {
     formData.append('price', String(Number(val.price)));
     formData.append('stock', String(Number(val.stock)));
     formData.append('brand', val.brand?.trim() || '');
-    
+
     const sizesArr = (val.sizes || '').split(',').map((s: string) => s.trim()).filter(Boolean);
     formData.append('sizes', JSON.stringify(sizesArr));
-    
+
     if (val.category_id?.trim()) {
       formData.append('category_id', val.category_id.trim());
     }
-    
+
     if (val.image_url) {
       formData.append('image_url', val.image_url.trim());
     }
@@ -248,6 +252,7 @@ export class AdminProducts implements OnInit {
         console.error('Error del servidor:', err);
         const errorMsg = err.error?.error || err.error?.message || err.message;
         this.toastService.show('Error: ' + errorMsg);
+        this.cdr.detectChanges();
       }
     });
   }
