@@ -39,6 +39,7 @@ interface ProductForm {
 })
 export class AdminProducts implements OnInit {
   products: Product[] = [];
+  categories: { id: string; name: string }[] = [];
   loading = false;
   isCreating = false;
   searchTerm: string = '';
@@ -59,6 +60,16 @@ export class AdminProducts implements OnInit {
   ngOnInit(): void {
     this.initForms();
     this.loadProducts();
+    this.loadCategories();
+  }
+
+  loadCategories(): void {
+    this.productsService.getCategories().subscribe({
+      next: (res: any) => {
+        this.categories = Array.isArray(res) ? res : (res.data || []);
+      },
+      error: (err) => console.error('Error al cargar categorías', err)
+    });
   }
 
   initForms(): void {
